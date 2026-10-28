@@ -1,0 +1,94 @@
+/* Modo escuro: camada adicional para preservar o layout original. */
+:root { color-scheme: light; }
+html.dark-mode { color-scheme: dark; }
+html.dark-mode body {
+  --branco: #202124;
+  --fundo: #171819;
+  --creme: #171819;
+  --texto: #eeeeee;
+  --borda: #3b3b3b;
+  background: #171819 !important;
+  background-color: #171819 !important;
+  color: #eeeeee !important;
+}
+html.dark-mode main,
+html.dark-mode .categoria,
+html.dark-mode .carrinho,
+html.dark-mode .observacoes,
+html.dark-mode .payment-card,
+html.dark-mode .cart-summary,
+html.dark-mode .success-card,
+html.dark-mode .bg-white,
+html.dark-mode .produto,
+html.dark-mode .payment-option,
+html.dark-mode .order-item,
+html.dark-mode .resumo-item {
+  background-color: #202124 !important;
+  color: #eeeeee !important;
+  border-color: #3b3b3b !important;
+}
+html.dark-mode .categoria > h2,
+html.dark-mode .payment-option:hover,
+html.dark-mode .payment-option:has(input[type="radio"]:checked),
+html.dark-mode .produto:hover {
+  background-color: #2b2928 !important;
+  color: #ffd8a8 !important;
+  border-color: #4b4038 !important;
+}
+html.dark-mode h1,
+html.dark-mode h2,
+html.dark-mode h3,
+html.dark-mode .produto h3,
+html.dark-mode .introducao h2,
+html.dark-mode .cart-summary h2,
+html.dark-mode .payment-card h2 {
+  color: #ffd8a8 !important;
+}
+html.dark-mode p,
+html.dark-mode label,
+html.dark-mode small,
+html.dark-mode .produto p,
+html.dark-mode .introducao p,
+html.dark-mode .payment-card p {
+  color: #c7c7c7;
+}
+html.dark-mode input:not([type="radio"]):not([type="checkbox"]),
+html.dark-mode textarea,
+html.dark-mode select {
+  background-color: #292a2d !important;
+  color: #f5f5f5 !important;
+  border-color: #555 !important;
+}
+html.dark-mode input::placeholder,
+html.dark-mode textarea::placeholder { color: #aaa !important; }
+html.dark-mode .produto,
+html.dark-mode .payment-option { box-shadow: none; }
+html.dark-mode footer { background-color: #202124 !important; color: #ddd !important; }
+html.dark-mode .total-rodape { color: #ffd8a8 !important; }
+
+.theme-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 11px 15px;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 999px;
+  background: #73061a;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,.22);
+  font: 700 13px Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  transition: transform .2s, background .2s;
+}
+.theme-toggle:hover { transform: translateY(-2px); background: #a01d2e; }
+.theme-toggle:focus-visible { outline: 3px solid #f2b138; outline-offset: 3px; }
+html.dark-mode .theme-toggle { background: #f2b138; color: #301018; border-color: #f2b138; }
+@media (max-width: 600px) {
+  .theme-toggle { right: 12px; bottom: 12px; min-height: 42px; padding: 10px 13px; }
+}

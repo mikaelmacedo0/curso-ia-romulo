@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTech Soluções Tecnológicas</title>
+    <script>tailwind={config:{corePlugins:{preflight:false}}}</script>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <style type="text/tailwindcss">
+.t-card{@apply rounded-xl border border-slate-200 bg-white p-5 shadow-sm}
+.t-in{@apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400}
+.t-lbl{@apply mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500}
+.t-b2{@apply rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer}
+.t-tab{@apply rounded-full px-4 py-1.5 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 cursor-pointer}
+.t-tab.on{@apply bg-sky-700 text-white}
+</style>
+<style>@media print{header,footer,.no-print{display:none!important}.container{box-shadow:none;margin:0;max-width:100%}}</style>
+
+    <style>
+        :root {
+            --primary: #0B3C5D;
+            --secondary: #328CC1;
+            --bg: #F4F7F6;
+            --text: #1D2731;
+            --open: #28A745;
+            --in-progress: #FFC107;
+            --closed: #DC3545;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #D9B310;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            flex: 1;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary);
+        }
+
+        .badge {
+            padding: 0.4rem 0.8rem;
+            color: white;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        .status-aberto { background-color: var(--open); }
+        .status-atendimento { background-color: var(--in-progress); color: #333; }
+        .status-encerrado { background-color: var(--closed); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        table th, table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        table th {
+            background-color: #f8f9fa;
+            color: var(--primary);
+        }
+
+        footer {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Gtech Soluções Tecnológicas</h1>
+        <nav>
+            <a href="#home" target="_self" onclick="showPage('home')">Início</a>
+            <a href="#contratar" target="_self" onclick="showPage('contratar')">Contratar Serviço</a>
+            <a href="#proposta" target="_self" onclick="showPage('proposta')">Proposta de Vendas</a>
+            <a href="#painel" target="_self" onclick="showPage('painel')">Painel &amp; Documentos</a>
+            <a href="#login" target="_self" onclick="showPage('login')">Área Restrita (Helpdesk N1)</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <h2>Bem-vindo à GTech Soluções</h2>
+            <p style="margin-bottom: 1rem;">Oferecemos serviços de suporte técnico remoto de alta performance com AnyDesk, TeamViewer e parque de máquinas contingencial para garantir que sua empresa nunca pare.</p>
+            <button class="btn" onclick="showPage('contratar')">Contratar Serviço / Abrir Demanda</button>
+            <button class="btn" style="background:#0B3C5D" onclick="showPage('proposta')">Montar Proposta de Vendas</button>
+            <button class="btn" style="background:#6c757d" onclick="showPage('painel')">Painel &amp; Documentos</button>
+        </div>
+
+        <!-- PROPOSTA DE VENDAS -->
+        <div id="proposta" class="page">
+            <div class="flex flex-wrap items-end justify-between gap-3 mb-6">
+                <div>
+                    <h2 style="margin:0;border:0;padding:0">Proposta de Prestação de Serviço</h2>
+                    <p class="text-sm text-slate-500 mt-1">Selecione cliente, vendedor e serviços — os valores são calculados automaticamente.</p>
+                </div>
+                <div class="flex gap-2 no-print">
+                    <button class="t-b2" onclick="PR.novo()">+ Nova proposta</button>
+                    <button class="t-b2" onclick="PR.cad('cliente')">+ Cliente</button>
+                    <button class="t-b2" onclick="PR.cad('servico')">+ Serviço</button>
+                    <button class="t-b2" onclick="PR.cad('tecnico')">+ Vendedor</button>
+                </div>
+            </div>
+            <div class="grid gap-5 lg:grid-cols-3">
+                <div class="lg:col-span-2 space-y-5">
+                    <section class="t-card">
+                        <h3 class="mb-3 text-sm font-bold text-sky-900">1 · Cliente</h3>
+                        <select id="pr-cli" class="t-in" onchange="PR.set('cli',this.value)"></select>
+                        <div id="pr-cliinfo" class="mt-4 grid gap-3 text-sm sm:grid-cols-2"></div>
+                    </section>
+                    <section class="t-card">
+                        <h3 class="mb-3 text-sm font-bold text-sky-900">2 · Vendedor / Técnico responsável e dados</h3>
+                        <div class="grid gap-3 sm:grid-cols-3">
+                            <div><label class="t-lbl">Vendedor</label><select id="pr-tec" class="t-in" onchange="PR.set('tec',this.value)"></select></div>
+                            <div><label class="t-lbl">Nº da proposta</label><input id="pr-num" class="t-in" oninput="PR.set('num',this.value,1)"></div>
+                            <div><label class="t-lbl">Data</label><input id="pr-data" type="date" class="t-in" oninput="PR.set('data',this.value,1)"></div>
+                        </div>
+                    </section>
+                    <section class="t-card">
+                        <div class="mb-3 flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-sky-900">3 · Serviços</h3>
+                            <button class="t-b2 no-print" onclick="PR.add()">+ Adicionar serviço</button>
+                        </div>
+                        <div class="overflow-x-auto"><table class="min-w-[560px]">
+                            <thead><tr><th>Serviço</th><th class="w-24">Quant.</th><th>Unid.</th><th class="text-right">Unitário</th><th class="text-right">Total</th><th></th></tr></thead>
+                            <tbody id="pr-itens"></tbody>
+                        </table></div>
+                        <div class="mt-4"><label class="t-lbl">Observações</label><textarea id="pr-obs" rows="2" class="t-in" oninput="PR.set('obs',this.value,1)"></textarea></div>
+                    </section>
+                </div>
+                <aside class="space-y-5">
+                    <section class="t-card lg:sticky lg:top-4">
+                        <h3 class="mb-3 text-sm font-bold text-sky-900">Resumo financeiro</h3>
+                        <dl class="space-y-2 text-sm">
+                            <div class="flex justify-between"><dt>Subtotal</dt><dd id="pr-sub" class="font-semibold"></dd></div>
+                            <div class="flex items-center justify-between gap-2"><dt>ISS <input type="number" step="0.1" min="0" id="pr-iss" class="t-in !inline-block !w-20 !py-1" oninput="PR.set('iss',this.value)"> %</dt><dd id="pr-issv" class="font-semibold text-red-600"></dd></div>
+                            <div class="flex items-center justify-between gap-2"><dt>Desconto <input type="number" step="0.1" min="0" id="pr-desc" class="t-in !inline-block !w-20 !py-1" oninput="PR.set('desc',this.value)"> %</dt><dd id="pr-descv" class="font-semibold text-red-600"></dd></div>
+                        </dl>
+                        <div class="mt-4 rounded-lg bg-sky-900 p-4 text-white"><div class="text-xs uppercase tracking-wide opacity-80">Total a pagar</div><div id="pr-total" class="text-3xl font-extrabold"></div></div>
+                        <p class="mt-2 text-xs text-slate-400">Fórmula conforme a planilha: Total = Subtotal − ISS − Desconto, com Desconto = (Subtotal − taxa ISS) × % desconto.</p>
+                        <button onclick="PR.exportar()" class="no-print mt-4 w-full rounded-xl bg-emerald-600 px-4 py-4 text-base font-extrabold text-white shadow-lg ring-4 ring-emerald-200 transition hover:bg-emerald-700 cursor-pointer">⬇ Exportar e salvar no computador</button>
+                        <div class="no-print mt-3 grid grid-cols-2 gap-2">
+                            <button class="t-b2" onclick="PR.csv()">CSV</button>
+                            <button class="t-b2" onclick="window.print()">Imprimir / PDF</button>
+                            <button class="t-b2" onclick="PR.salvar()">Salvar proposta</button>
+                            <button class="t-b2" onclick="PR.chamado()">Gerar chamado</button>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+            <section class="t-card no-print mt-5">
+                <div class="mb-3 flex gap-2" id="pr-tabs"></div>
+                <div id="pr-lista" class="overflow-x-auto"></div>
+            </section>
+        </div>
+
+        <!-- PAINEL: INDICADORES E DOCUMENTOS -->
+        <div id="painel" class="page">
+            <h2>Painel GTech · Indicadores, Financeiro, Estoque e Documentos</h2>
+            <div class="mb-5 flex flex-wrap gap-2" id="pn-tabs"></div>
+            <div id="pn-body"></div>
+        </div>
+        <div id="pr-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 p-4">
+            <form class="t-card w-full max-w-md" onsubmit="PR.okcad(event)"><h3 id="pr-mt" class="mb-4 text-lg font-bold text-sky-900"></h3><div id="pr-mf" class="space-y-3"></div>
+                <div class="mt-5 flex justify-end gap-2"><button type="button" class="t-b2" onclick="PR.fecha()">Cancelar</button><button class="rounded-lg bg-sky-700 px-4 py-2 text-sm font-bold text-white hover:bg-sky-900 cursor-pointer">Salvar</button></div></form>
+        </div>
+        <div id="pr-toast" class="fixed bottom-5 right-5 z-50 hidden rounded-lg bg-slate-900 px-4 py-3 text-sm text-white shadow-lg"></div>
+
+        <!-- FORMULARIO CONTRATAR SERVICO -->
+        <div id="contratar" class="page">
+            <h2>Cadastro de Solicitação de Serviço</h2>
+            <form id="serviceForm" onsubmit="handleServiceSubmit(event)">
+                <div class="form-group">
+                    <label>Nome do Cliente / Empresa:</label>
+                    <input type="text" id="cli_nome" required placeholder="Ex: Azevedo Soluções LTDA">
+                </div>
+                <div class="form-group">
+                    <label>Endereço Completo:</label>
+                    <input type="text" id="cli_end" required placeholder="Ex: Av. Dom Luís, 1200 - Aldeota, Fortaleza/CE">
+                </div>
+                <div class="form-group">
+                    <label>Telefone / WhatsApp:</label>
+                    <input type="tel" id="cli_tel" required placeholder="(85) 99999-9999">
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Serviço:</label>
+                    <select id="cli_servico" required>
+                        <option value="manutencao">Manutenção Remota</option>
+                        <option value="troca">Troca de Equipamentos (Parque Reserva)</option>
+                        <option value="duvidas">Dúvidas Operacionais / Suporte Geral</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição Detalhada do Atendimento:</label>
+                    <textarea id="cli_desc" rows="4" required placeholder="Descreva o problema ou necessidade..."></textarea>
+                </div>
+                <button type="submit" class="btn">Confirmar e Gerar Chamado</button>
+            </form>
+        </div>
+
+        <!-- TELA DE LOGIN HELPDESK -->
+        <div id="login" class="page">
+            <h2>Acesso Restrito - Helpdesk N1</h2>
+            <form onsubmit="handleLogin(event)" style="max-width: 400px;">
+                <div class="form-group">
+                    <label>Usuário:</label>
+                    <input type="text" id="user" required value="administrador">
+                </div>
+                <div class="form-group">
+                    <label>Senha:</label>
+                    <input type="password" id="pass" required value="admnistradorti@123">
+                </div>
+                <button type="submit" class="btn">Entrar no Sistema ITIL</button>
+            </form>
+        </div>
+
+        <!-- SISTEMA DE CHAMADOS (CLIENTE / PAINEL HELPDESK N1) -->
+        <div id="chamados" class="page">
+            <h2>Sistema de Chamados & Acompanhamento SLA (ITIL)</h2>
+            <p style="margin-bottom: 1rem; font-size: 0.9rem; color: #666;">Painel Operacional N1 - Gestão do Ciclo de Vida do Chamado</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Chamado</th>
+                        <th>Cliente</th>
+                        <th>Tipo de Chamado</th>
+                        <th>SLA Máximo</th>
+                        <th>Status ITIL</th>
+                        <th>Ações N1</th>
+                    </tr>
+                </thead>
+                <tbody id="chamadosTableBody">
+                    <tr>
+                        <td>#CH-1001</td>
+                        <td>Clínica Saúde Aldeota</td>
+                        <td>Troca de Equipamentos</td>
+                        <td>2 Horas</td>
+                        <td><span class="badge status-aberto">Aberto</span></td>
+                        <td>
+                            <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="alterarStatus(this, 'Em Atendimento')">Atender</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#CH-1002</td>
+                        <td>Azevedo & Siqueira Adv</td>
+                        <td>Manutenção Remota</td>
+                        <td>6 Horas</td>
+                        <td><span class="badge status-atendimento">Em Atendimento</span></td>
+                        <td>
+                            <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; background:#DC3545;" onclick="alterarStatus(this, 'Encerrado')">Encerrar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 GTech Soluções Tecnológicas. Todos os direitos reservados. Fortaleza/CE.</p>
+    </footer>
+
+    <script>
+        let ticketCount = 1003;
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function handleServiceSubmit(e) {
+            e.preventDefault();
+            const cliente = document.getElementById('cli_nome').value;
+            const servico = document.getElementById('cli_servico').options[document.getElementById('cli_servico').selectedIndex].text;
+            
+            let sla = "24 Horas";
+            if(document.getElementById('cli_servico').value === 'troca') sla = "2 Horas";
+            if(document.getElementById('cli_servico').value === 'manutencao') sla = "6 Horas";
+
+            const tbody = document.getElementById('chamadosTableBody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>#CH-${ticketCount++}</td>
+                <td>${cliente}</td>
+                <td>${servico}</td>
+                <td>${sla}</td>
+                <td><span class="badge status-aberto">Aberto</span></td>
+                <td>
+                    <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="alterarStatus(this, 'Em Atendimento')">Atender</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+
+            alert("Solicitação cadastrada com sucesso! Redirecionando para o Sistema de Chamados.");
+            showPage('chamados');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+
+            if (u === 'administrador' && p === 'admnistradorti@123') {
+                alert('Autenticado com sucesso como Helpdesk N1!');
+                showPage('chamados');
+            } else {
+                alert('Usuário ou senha inválidos!');
+            }
+        }
+
+        function alterarStatus(btn, novoStatus) {
+            const tdStatus = btn.parentElement.parentElement.children[4];
+            const tdAcao = btn.parentElement;
+
+            if (novoStatus === 'Em Atendimento') {
+                tdStatus.innerHTML = '<span class="badge status-atendimento">Em Atendimento</span>';
+                tdAcao.innerHTML = `<button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; background:#DC3545;" onclick="alterarStatus(this, 'Encerrado')">Encerrar</button>`;
+            } else if (novoStatus === 'Encerrado') {
+                tdStatus.innerHTML = '<span class="badge status-encerrado">Encerrado</span>';
+                tdAcao.innerHTML = `<span style="font-size:0.85rem; color:#666;">Concluído</span>`;
+            }
+        }
+    </script>
+<script>
+/* ===== GTech · Proposta de Vendas e Painel ===== */
+const SEED={"clientes": [{"cod": 2, "cad": "2019-01-02", "nome": "Ana Silva Santos", "cpf": "123.456.789-01", "nasc": "1978-05-01", "whats": "(11) 98765-4321", "end": "Av. Paulista, 1000", "bairro": "Bela Vista", "cidade": "São Paulo", "uf": "SP"}, {"cod": 3, "cad": "2010-01-05", "nome": "Bruno Oliveira Lima", "cpf": "234.567.890-12", "nasc": "1979-05-02", "whats": "(21) 99876-5432", "end": "Rua Barão da Torre, 250", "bairro": "Ipanema", "cidade": "Rio de Janeiro", "uf": "RJ"}, {"cod": 4, "cad": "2015-01-10", "nome": "Carla Souza Pereira", "cpf": "345.678.901-23", "nasc": "1980-05-02", "whats": "(31) 97654-3210", "end": "Av. Afonso Pena, 1500", "bairro": "Centro", "cidade": "Belo Horizonte", "uf": "MG"}, {"cod": 5, "cad": "2005-01-12", "nome": "Daniel Costa Ferreira", "cpf": "456.789.012-34", "nasc": "1981-05-03", "whats": "(41) 98877-6655", "end": "Rua das Flores, 45", "bairro": "Batel", "cidade": "Curitiba", "uf": "PR"}, {"cod": 6, "cad": "2026-01-15", "nome": "Eduardo Rodrigues Alves", "cpf": "567.890.123-45", "nasc": "1982-05-04", "whats": "(51) 99123-4567", "end": "Av. Borges de Medeiros, 800", "bairro": "Praia de Belas", "cidade": "Porto Alegre", "uf": "RS"}, {"cod": 7, "cad": "2026-01-18", "nome": "Fernanda Lima Barbosa", "cpf": "678.901.234-56", "nasc": "1983-05-05", "whats": "(71) 98234-5678", "end": "Av. Oceanica, 300", "bairro": "Barra", "cidade": "Salvador", "uf": "BA"}, {"cod": 8, "cad": "2026-01-22", "nome": "Gabriel Martins Ribeiro", "cpf": "789.012.345-67", "nasc": "1984-05-05", "whats": "(85) 99345-6789", "end": "Av. Beira Mar, 2100", "bairro": "Meireles", "cidade": "Fortaleza", "uf": "CE"}, {"cod": 9, "cad": "2026-01-25", "nome": "Helena Castro Gomes", "cpf": "890.123.456-78", "nasc": "1985-05-06", "whats": "(81) 98456-7890", "end": "Av. Boa Viagem, 1200", "bairro": "Boa Viagem", "cidade": "Recife", "uf": "PE"}, {"cod": 10, "cad": "2026-01-28", "nome": "Igor Fernandes Rocha", "cpf": "901.234.567-89", "nasc": "1986-05-07", "whats": "(61) 99567-8901", "end": "SQN 208 Bloco B, Apt 102", "bairro": "Asa Norte", "cidade": "Brasília", "uf": "DF"}, {"cod": 11, "cad": "2026-02-01", "nome": "Juliana Mendes Carvalho", "cpf": "012.345.678-90", "nasc": "1987-05-08", "whats": "(27) 98678-9012", "end": "Av. Dante Michelini, 500", "bairro": "Jardim da Penha", "cidade": "Vitória", "uf": "ES"}, {"cod": 12, "cad": "2026-02-03", "nome": "Lucas Araújo Correia", "cpf": "112.233.445-56", "nasc": "1988-05-08", "whats": "(62) 99789-0123", "end": "Av. T-63, 1100", "bairro": "Setor Bueno", "cidade": "Goiânia", "uf": "GO"}, {"cod": 13, "cad": "2026-02-06", "nome": "Mariana Azevedo Melo", "cpf": "223.344.556-67", "nasc": "1989-05-09", "whats": "(92) 98890-1234", "end": "Av. Djalma Batista, 450", "bairro": "Nossa Senhora das Graças", "cidade": "Manaus", "uf": "AM"}, {"cod": 14, "cad": "2026-02-10", "nome": "Nicolas Cardoso Teixeira", "cpf": "334.455.667-78", "nasc": "1990-05-10", "whats": "(84) 99901-2345", "end": "Av. Engenheiro Roberto Freire, 800", "bairro": "Capim Macio", "cidade": "Natal", "uf": "RN"}, {"cod": 15, "cad": "2026-02-12", "nome": "Olivia Duarte Freitas", "cpf": "445.566.778-89", "nasc": "1991-05-11", "whats": "(48) 98112-2334", "end": "Rodovia SC-401, 1500", "bairro": "Saco Grande", "cidade": "Florianópolis", "uf": "SC"}, {"cod": 16, "cad": "2026-02-15", "nome": "Paulo Henrique Ramos", "cpf": "556.677.889-90", "nasc": "1992-05-11", "whats": "(98) 99223-3445", "end": "Av. dos Holandeses, 10", "bairro": "Calhau", "cidade": "São Luís", "uf": "MA"}, {"cod": 17, "cad": "2026-02-18", "nome": "Quintino Vieira Lopes", "cpf": "667.788.990-01", "nasc": "1993-05-12", "whats": "(83) 98334-4556", "end": "Av. Epitácio Pessoa, 2300", "bairro": "Tambaú", "cidade": "João Pessoa", "uf": "PB"}, {"cod": 18, "cad": "2026-02-20", "nome": "Renata Nunes Monte", "cpf": "778.899.001-12", "nasc": "1994-05-13", "whats": "(82) 99445-5667", "end": "Av. Álvaro Otacílio, 900", "bairro": "Jatiúca", "cidade": "Maceió", "uf": "AL"}, {"cod": 19, "cad": "2026-02-22", "nome": "Samuel Barbosa Farias", "cpf": "889.900.112-23", "nasc": "1995-05-14", "whats": "(79) 98556-6778", "end": "Av. Santos Dumont, 1400", "bairro": "Atalaia", "cidade": "Aracaju", "uf": "SE"}, {"cod": 20, "cad": "2026-02-25", "nome": "Tatiana Cavalcanti Dias", "cpf": "990.011.223-34", "nasc": "1996-05-14", "whats": "(65) 99667-7889", "end": "Av. Historiador Rubens de Mendonça, 600", "bairro": "Bosque da Saúde", "cidade": "Cuiabá", "uf": "MT"}, {"cod": 21, "cad": "2026-02-28", "nome": "Vinicius Monteiro Machado", "cpf": "001.122.334-45", "nasc": "1997-05-15", "whats": "(67) 98778-8990", "end": "Av. Afonso Pena, 3000", "bairro": "Jardim dos Estados", "cidade": "Campo Grande", "uf": "MS"}], "servicos": [{"cod": 1, "desc": "Formatação do computador", "preco": 150}, {"cod": 2, "desc": "Limpeza interna", "preco": 80}, {"cod": 3, "desc": "Instalação do Windows", "preco": 100}, {"cod": 4, "desc": "Instalação de programas", "preco": 60}, {"cod": 5, "desc": "Remoção de vírus", "preco": 120}, {"cod": 6, "desc": "Backup de arquivos", "preco": 90}, {"cod": 7, "desc": "Troca de HD/SSD", "preco": 100}, {"cod": 8, "desc": "Upgrade de memória RAM", "preco": 70}, {"cod": 9, "desc": "Configuração de rede", "preco": 80}, {"cod": 10, "desc": "Diagnóstico técnico", "preco": 70}], "tecnicos": [{"cod": 1, "nome": "Rejane"}, {"cod": 2, "nome": "Levi"}, {"cod": 3, "nome": "Jean"}, {"cod": 4, "nome": "Georgeana"}, {"cod": 5, "nome": "Natanael"}, {"cod": 6, "nome": "Maria Evelina"}, {"cod": 7, "nome": "Talita"}, {"cod": 8, "nome": "Wilton"}, {"cod": 9, "nome": "Pâmela"}, {"cod": 10, "nome": "Evely Gabriele"}, {"cod": 11, "nome": "Kaua Benevides"}, {"cod": 12, "nome": "Mikael"}], "propostas": [], "docs": {"ind": [["Total de Chamados Abertos (Mês)", 450, 500, "Dentro da Capacidade"], ["Chamados Resolvidos no N1 (First Contact Resolution)", 382, 350, "Meta Atingida (84.8%)"], ["Tempo Médio de Primeira Resposta (TMR)", "14 minutos", "< 30 minutos", "Excelente"], ["Tempo Médio de Solução (TMS)", "2.4 horas", "< 4.0 horas", "Excelente"], ["Índice de Cumprimento do SLA", "96.4%", "> 95.0%", "Conforme ITIL"], ["Trocas de Equipamento Realizadas (Swap Parque 50)", 12, 50, "Estoque Suficiente"], ["Taxa de Satisfação do Cliente (CSAT)", "4.85 / 5.0", "> 4.50", "Excelente"]], "canais": [["WhatsApp Business", 15, 8, 210], ["E-mail Integrado", 10, 5, 120], ["Portal Web (Sistema)", 8, 4, 70]], "inv": [["Servidor Principal Dell PowerEdge T350", "Infraestrutura", 2, 14500], ["Licenciamento AnyDesk Enterprise (50 Licenças)", "Software", 1, 18000], ["Licenciamento TeamViewer Corporate", "Software", 1, 15000], ["Desenvolvimento & Customização do Sistema de Chamados", "Software", 1, 12000], ["Notebooks de Reserva Terceirizados (Parque 50 un.)", "Parque Reserva", 50, 3200], ["Equipamentos de Rede (Switches Cisco, Roteadores, Firewall)", "Infraestrutura", 1, 16500], ["Mobiliário e Ergonomia para Operação Helpdesk N1", "Escritório", 1, 14000]], "proj": [["Mês 1", 15, 1200, 18000], ["Mês 2", 18, 1200, 18500], ["Mês 3", 22, 1200, 19000], ["Mês 4", 25, 1250, 20000], ["Mês 5", 30, 1250, 21000], ["Mês 6", 35, 1250, 22000], ["Mês 7", 40, 1300, 23000], ["Mês 8", 45, 1300, 24000], ["Mês 9", 50, 1300, 25000], ["Mês 10", 55, 1350, 26000], ["Mês 11", 60, 1350, 27000], ["Mês 12", 65, 1350, 28000]], "est": [["M-GTECH-001", "Dell Vostro 3520 i5 16GB", "SN-884921", "Alocado", "Cliente 1 LTDA", "2026-09-15"], ["M-GTECH-002", "Dell Vostro 3520 i5 16GB", "SN-884922", "Alocado", "Cliente 2 LTDA", "2026-09-15"], ["M-GTECH-003", "Dell Vostro 3520 i5 16GB", "SN-884923", "Alocado", "Cliente 3 LTDA", "2026-09-15"], ["M-GTECH-004", "Dell Vostro 3520 i5 16GB", "SN-884924", "Alocado", "Cliente 4 LTDA", "2026-09-15"], ["M-GTECH-005", "Dell Vostro 3520 i5 16GB", "SN-884925", "Alocado", "Cliente 5 LTDA", "2026-09-15"], ["M-GTECH-006", "Dell Vostro 3520 i5 16GB", "SN-884926", "Alocado", "Cliente 6 LTDA", "2026-09-15"], ["M-GTECH-007", "Dell Vostro 3520 i5 16GB", "SN-884927", "Alocado", "Cliente 7 LTDA", "2026-09-15"], ["M-GTECH-008", "Dell Vostro 3520 i5 16GB", "SN-884928", "Alocado", "Cliente 8 LTDA", "2026-09-15"], ["M-GTECH-009", "Dell Vostro 3520 i5 16GB", "SN-884929", "Alocado", "Cliente 9 LTDA", "2026-09-15"], ["M-GTECH-010", "Dell Vostro 3520 i5 16GB", "SN-8849210", "Alocado", "Cliente 10 LTDA", "2026-09-15"], ["M-GTECH-011", "Dell Vostro 3520 i5 16GB", "SN-8849211", "Alocado", "Cliente 1 LTDA", "2026-09-15"], ["M-GTECH-012", "Dell Vostro 3520 i5 16GB", "SN-8849212", "Alocado", "Cliente 2 LTDA", "2026-09-15"], ["M-GTECH-013", "Dell Vostro 3520 i5 16GB", "SN-8849213", "Alocado", "Cliente 3 LTDA", "2026-09-15"], ["M-GTECH-014", "Dell Vostro 3520 i5 16GB", "SN-8849214", "Alocado", "Cliente 4 LTDA", "2026-09-15"], ["M-GTECH-015", "Dell Vostro 3520 i5 16GB", "SN-8849215", "Alocado", "Cliente 5 LTDA", "2026-09-15"], ["M-GTECH-016", "Dell Vostro 3520 i5 16GB", "SN-8849216", "Alocado", "Cliente 6 LTDA", "2026-09-15"], ["M-GTECH-017", "Dell Vostro 3520 i5 16GB", "SN-8849217", "Alocado", "Cliente 7 LTDA", "2026-09-15"], ["M-GTECH-018", "Dell Vostro 3520 i5 16GB", "SN-8849218", "Alocado", "Cliente 8 LTDA", "2026-09-15"], ["M-GTECH-019", "Dell Vostro 3520 i5 16GB", "SN-8849219", "Alocado", "Cliente 9 LTDA", "2026-09-15"], ["M-GTECH-020", "Dell Vostro 3520 i5 16GB", "SN-8849220", "Alocado", "Cliente 10 LTDA", "2026-09-15"], ["M-GTECH-021", "Dell Vostro 3520 i5 16GB", "SN-8849221", "Alocado", "Cliente 1 LTDA", "2026-09-15"], ["M-GTECH-022", "Dell Vostro 3520 i5 16GB", "SN-8849222", "Alocado", "Cliente 2 LTDA", "2026-09-15"], ["M-GTECH-023", "Dell Vostro 3520 i5 16GB", "SN-8849223", "Alocado", "Cliente 3 LTDA", "2026-09-15"], ["M-GTECH-024", "Dell Vostro 3520 i5 16GB", "SN-8849224", "Alocado", "Cliente 4 LTDA", "2026-09-15"], ["M-GTECH-025", "Dell Vostro 3520 i5 16GB", "SN-8849225", "Alocado", "Cliente 5 LTDA", "2026-09-15"], ["M-GTECH-026", "Dell Vostro 3520 i5 16GB", "SN-8849226", "Alocado", "Cliente 6 LTDA", "2026-09-15"], ["M-GTECH-027", "Dell Vostro 3520 i5 16GB", "SN-8849227", "Alocado", "Cliente 7 LTDA", "2026-09-15"], ["M-GTECH-028", "Dell Vostro 3520 i5 16GB", "SN-8849228", "Alocado", "Cliente 8 LTDA", "2026-09-15"], ["M-GTECH-029", "Dell Vostro 3520 i5 16GB", "SN-8849229", "Alocado", "Cliente 9 LTDA", "2026-09-15"], ["M-GTECH-030", "Dell Vostro 3520 i5 16GB", "SN-8849230", "Alocado", "Cliente 10 LTDA", "2026-09-15"], ["M-GTECH-031", "Dell Vostro 3520 i5 16GB", "SN-8849231", "Alocado", "Cliente 1 LTDA", "2026-09-15"], ["M-GTECH-032", "Dell Vostro 3520 i5 16GB", "SN-8849232", "Alocado", "Cliente 2 LTDA", "2026-09-15"], ["M-GTECH-033", "Dell Vostro 3520 i5 16GB", "SN-8849233", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-034", "Dell Vostro 3520 i5 16GB", "SN-8849234", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-035", "Dell Vostro 3520 i5 16GB", "SN-8849235", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-036", "Dell Vostro 3520 i5 16GB", "SN-8849236", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-037", "Dell Vostro 3520 i5 16GB", "SN-8849237", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-038", "Dell Vostro 3520 i5 16GB", "SN-8849238", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-039", "Dell Vostro 3520 i5 16GB", "SN-8849239", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-040", "Dell Vostro 3520 i5 16GB", "SN-8849240", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-041", "Dell Vostro 3520 i5 16GB", "SN-8849241", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-042", "Dell Vostro 3520 i5 16GB", "SN-8849242", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-043", "Dell Vostro 3520 i5 16GB", "SN-8849243", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-044", "Dell Vostro 3520 i5 16GB", "SN-8849244", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-045", "Dell Vostro 3520 i5 16GB", "SN-8849245", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-046", "Dell Vostro 3520 i5 16GB", "SN-8849246", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-047", "Dell Vostro 3520 i5 16GB", "SN-8849247", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-048", "Dell Vostro 3520 i5 16GB", "SN-8849248", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-049", "Dell Vostro 3520 i5 16GB", "SN-8849249", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-050", "Dell Vostro 3520 i5 16GB", "SN-8849250", "Disponível em Estoque", "N/A", "N/A"]], "cf": [["CLI-001", "Azevedo & Siqueira Advogados", "Premium Helpdesk", 5, 2500, "PAGO", "05/10/2026"], ["CLI-002", "Macedo Logística CE", "Standard Helpdesk", 3, 1800, "PAGO", "05/10/2026"], ["CLI-003", "Clínica Saúde Aldeota", "Premium Helpdesk", 8, 3800, "PENDENTE", "05/10/2026"], ["CLI-004", "Supermercado Fortaleza Express", "Enterprise Omnichannel", 12, 5500, "PAGO", "05/10/2026"], ["CLI-005", "Distribuidora Sol Nascente", "Standard Helpdesk", 4, 2200, "PAGO", "05/10/2026"]], "contrato": ["CONTRATO DE PRESTAÇÃO DE SERVIÇOS DE SUPORTE TÉCNICO E LOCAÇÃO DE EQUIPAMENTOS", "Pelo presente instrumento particular, de um lado, GTECH SOLUÇÕES TECNOLÓGICAS LTDA., pessoa jurídica de direito privado, inscrita no CNPJ/MF sob o nº 45.678.910/0001-23, com sede na Av. Dom Luís, nº 1200, Sala 804, Bairro Aldeota, Fortaleza/CE, CEP 60160-230, neste ato representada por seus sócios administradores MIKAEL MACEDO, JOÃO VICTOR e RIAN, doravante denominada simplesmente CONTRATADA; e, de outro lado, a CONTRATANTE devidamente qualificada no Cadastramento de Serviços; têm entre si justo e contratado o que se segue nas cláusulas abaixo:", "CLÁUSULA PRIMEIRA – DO OBJETO", "O presente contrato tem por objeto a prestação de serviços especializados de suporte técnico e helpdesk remoto, gerenciamento de incidentes operacionais, instalação de softwares e gestão contingencial de hardware através da disponibilização de computadores substitutos pertencentes ao parque terceirizado da CONTRATADA.", "CLÁUSULA SEGUNDA – DOS CANAIS E METODOLOGIA DE ATENDIMENTO", "Os atendimentos serão realizados via Helpdesk remoto com uso das ferramentas AnyDesk e TeamViewer. As aberturas de solicitações ocorrerão obrigatoriamente através dos 3 (três) canais oficiais: WhatsApp Business, E-mail institucional e Portal do Sistema de Chamados. Todos os atendimentos seguirão o fluxo padronizado ITIL, respeitando a escala de status: Aberto (Verde), Em Atendimento (Amarelo) e Encerrado (Vermelho).", "CLÁUSULA TERCEIRA – DA SUBSTITUIÇÃO DE EQUIPAMENTOS (SWAP)", "A CONTRATADA manterá à disposição do contrato o parque reserva terceirizado de até 50 (cinquenta) máquinas. Na hipótese de defeito físico comprovado em equipamento da CONTRATANTE, a CONTRATADA efetuará a troca provisória em até 24 (vinte e quatro) horas úteis na cidade de Fortaleza/CE, garantindo a continuidade operacional das atividades do cliente.", "CLÁUSULA QUARTA – DOS NÍVEIS DE SERVIÇO (SLA)", "Os prazos máximos de primeira resposta e solução final obedecerão aos níveis acordados: Nível Crítico (Primeira resposta em 15 min, Solução em 2h); Nível Médio (Primeira resposta em 1h, Solução em 6h); Nível Baixo (Primeira resposta em 4h, Solução em 24h).", "CLÁUSULA QUINTA – DO VALOR E DO FECHAMENTO DE FATURA", "Pela prestação dos serviços objeto deste contrato, a CONTRATANTE pagará à CONTRATADA o valor mensal fixado no Plano contratado. O fechamento das faturas ocorrerá mensalmente no dia 25, com vencimento estipulado para o dia 05 do mês subsequente.", "CLÁUSULA SEXTA – DA VIGÊNCIA E RESCISÃO", "O presente contrato possui vigência de 12 (doze) meses, renovável automaticamente por iguais períodos, podendo ser rescindido por qualquer das partes mediante aviso prévio por escrito de 30 (trinta) dias.", "CLÁUSULA SÉTIMA – DO FORO", "Para dirimir quaisquer controvérsias oriundas do presente contrato, as partes elegem o Foro da Comarca de Fortaleza/CE, com renúncia expressa a qualquer outro, por mais privilegiado que seja.", "Fortaleza/CE, 08 de Outubro de 2026."], "relatorio": ["RELATÓRIO DE ATIVIDADES E OPERAÇÕES DE TI", "GTech Soluções Tecnológicas S.A. | Modelo Operacional ITIL v4 & Service Desk", "1. SUMÁRIO EXECUTIVO E APRESENTAÇÃO DA EMPRESA", "A GTech Soluções Tecnológicas é uma empresa especializada no provimento de serviços gerenciados de suporte técnico, consultoria infraestrutural e assistência remota de alta performance. Estruturada para atender micro, pequenas e médias empresas, a GTech oferece continuidade de negócios com padrão de excelência corporativo.", "2. ESTRUTURA OPERACIONAL E CANAIS DE ATENDIMENTO", "A empresa opera sob um modelo omnichannel integrado, garantindo facilidade de acesso, rastreabilidade e centralização de todas as solicitações nos seguintes canais:", "WhatsApp Business Corporativo: Canal ágil para abertura simplificada e triagem primária de incidentes leves.", "E-mail Integrado (suporte@gtech.com.br): Conversão automática de mensagens enviadas em chamados no sistema central.", "Portal Web de Chamados (Helpdesk GTech): Plataforma própria para autoatendimento, acompanhamento de SLA e interações diretas.", "2.1. Softwares de Conexão Remota Certificados", "Os atendimentos de suporte à distância são realizados exclusivamente por meio de ferramentas consolidadas e criptografadas de ponta a ponta: AnyDesk Enterprise e TeamViewer Corporate. Essa infraestrutura garante sessões seguras, auditoria de acessos e tempo de resposta imediato.", "3. SISTEMA DE STATUS E GESTÃO DE CICLO DE VIDA DO CHAMADO", "Para assegurar visibilidade em tempo real ao cliente e controle rigoroso da equipe interna, o ciclo de vida dos chamados obedece à convenção visual padronizada:", "4. ESCOPO DE SERVIÇOS E PARQUE TERCEIRIZADO DE RESERVA", "As atividades operacionais prestadas englobam rotinas preventivas, corretivas e de manutenção evolutiva:", "Instalação e Configuração de Sistemas: Deploy de sistemas operacionais (Windows Pro/Linux), softwares corporativos, ERPs, pacotes de produtividade e antivírus gerenciado.", "Resolução de Problemas Operacionais: Otimização de desempenho, remoção de malwares, depuração de erros de sistema, correção de drivers e suporte a periféricos.", "4.1. Gestão do Parque Terceirizado de Reserva (50 Máquinas)", "A GTech disponibiliza um parque contingencial de 50 computadores e notebooks terceirizados. Em casos de falhas de hardware no equipamento do cliente, a GTech efetua a substituição imediata (Swap de Máquina), reduzindo o tempo de inatividade (Downtime) do cliente a zero enquanto o equipamento principal passa por reparo laboratorial.", "5. ALINHAMENTO COM BOAS PRÁTICAS ITIL V4", "A operação de Service Desk da GTech é estritamente aderente ao framework ITIL v4, contemplando:", "Gestão de Incidentes (Incident Management): Foco na restauração rápida da operação normal do serviço e minimização do impacto nos negócios.", "Gestão de Requisições de Serviço (Service Request Management): Tratamento padronizado de solicitações normais de usuários (instalação de softwares, acessos).", "Acordos de Nível de Serviço (SLA - Service Level Agreement): Matriz de prioridade fundamentada na combinação entre Impacto e Urgência:"]}};
+const $=id=>document.getElementById(id);
+const R=v=>(+v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const D=s=>s?new Date(s+'T00:00:00'):null;
+const fd=s=>s?D(s).toLocaleDateString('pt-BR'):'';
+const iso=d=>d.toISOString().slice(0,10);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function dur(a,b){let y=b.getFullYear()-a.getFullYear(),m=b.getMonth()-a.getMonth(),d=b.getDate()-a.getDate();if(d<0){m--;d+=new Date(b.getFullYear(),b.getMonth(),0).getDate()}if(m<0){y--;m+=12}return `${y} anos, ${m} meses e ${d} dias`}
+let DB;try{DB=JSON.parse(localStorage.getItem('gtech_db'))}catch(e){}
+if(!DB||!DB.clientes)DB=JSON.parse(JSON.stringify(SEED));
+const persist=()=>{try{localStorage.setItem('gtech_db',JSON.stringify(DB))}catch(e){}};
+function toast(t){const e=$('pr-toast');e.textContent=t;e.classList.remove('hidden');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.add('hidden'),3500)}
+async function gravar(name,text,type){
+  if(window.showSaveFilePicker){try{const h=await showSaveFilePicker({suggestedName:name,types:[{description:'Arquivo',accept:{[type]:['.'+name.split('.').pop()]}}]});const w=await h.createWritable();await w.write(text);await w.close();return toast('Arquivo salvo no computador: '+name)}catch(e){if(e.name==='AbortError')return}}
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);toast('Download iniciado: '+name)}
+const CAD={
+ cliente:{t:'Novo cliente',k:'clientes',f:[['nome','Nome do cliente'],['cpf','Nº CPF'],['nasc','Data de nascimento','date'],['whats','WhatsApp'],['end','Endereço'],['bairro','Bairro'],['cidade','Cidade'],['uf','UF']]},
+ servico:{t:'Novo serviço',k:'servicos',f:[['desc','Descrição do serviço'],['preco','Preço (R$)','number']]},
+ tecnico:{t:'Novo vendedor / técnico',k:'tecnicos',f:[['nome','Nome']]}};
+let P,tabLista='clientes',cadAtual;
+const PR={
+ novo(){P={num:'PROP-'+String((DB.propostas.length||0)+1).padStart(4,'0'),data:iso(new Date()),cli:'',tec:DB.tecnicos[0]?.cod||'',itens:[{cod:'',qtd:1}],iss:5,desc:8.5,obs:''};PR.render()},
+ set(k,v,quiet){P[k]=v;if(quiet)return;if(k==='cli')PR.info();PR.calc()},
+ add(){P.itens.push({cod:'',qtd:1});PR.itens();PR.calc()},
+ del(i){P.itens.splice(i,1);if(!P.itens.length)P.itens.push({cod:'',qtd:1});PR.itens();PR.calc()},
+ item(i,k,v){P.itens[i][k]=k==='qtd'?Math.max(0,+v||0):v;if(k==='cod')PR.itens();PR.calc()},
+ totais(){let sub=0;P.itens.forEach(it=>{const s=DB.servicos.find(x=>x.cod==it.cod);it.un=s?s.preco:0;it.tot=s?s.preco*it.qtd:0;sub+=it.tot});
+   const t=(+P.iss||0)/100,d=(+P.desc||0)/100,issV=sub*t,descV=(sub-t)*d;return{sub,issV,descV,total:sub-issV-descV}},
+ calc(){const t=PR.totais();P.itens.forEach((it,i)=>{const e=$('pr-un'+i);if(e){e.textContent=R(it.un);$('pr-tt'+i).textContent=R(it.tot)}});
+   $('pr-sub').textContent=R(t.sub);$('pr-issv').textContent='− '+R(t.issV);$('pr-descv').textContent='− '+R(t.descV);$('pr-total').textContent=R(t.total)},
+ info(){const c=DB.clientes.find(x=>x.cod==P.cli),e=$('pr-cliinfo');if(!c){e.innerHTML='<p class="text-slate-400 sm:col-span-2">Selecione um cliente para carregar os dados.</p>';return}
+   const hoje=new Date(),anos=hoje.getFullYear()-D(c.cad).getFullYear()-((hoje.getMonth()<D(c.cad).getMonth()||(hoje.getMonth()==D(c.cad).getMonth()&&hoje.getDate()<D(c.cad).getDate()))?1:0),vip=anos>5;
+   const f=(l,v)=>`<div><span class="t-lbl">${l}</span>${esc(v)||'—'}</div>`;
+   e.innerHTML=f('CPF',c.cpf)+f('WhatsApp',c.whats)+f('Endereço',c.end)+f('Bairro',c.bairro)+f('Cidade / UF',c.cidade+' / '+c.uf)+f('Data de nascimento',fd(c.nasc))+f('Idade',c.nasc?dur(D(c.nasc),hoje):'')+f('Cadastro em',fd(c.cad))+f('Cliente ativo há',dur(D(c.cad),hoje))+
+   `<div><span class="t-lbl">Categoria</span><span class="rounded-full px-3 py-1 text-xs font-bold ${vip?'bg-amber-100 text-amber-800':'bg-slate-100 text-slate-700'}">${vip?'VIP':'COMUM'}</span></div>`},
+ itens(){$('pr-itens').innerHTML=P.itens.map((it,i)=>`<tr><td><select class="t-in" onchange="PR.item(${i},'cod',this.value)"><option value="">Selecione…</option>${DB.servicos.map(s=>`<option value="${s.cod}" ${s.cod==it.cod?'selected':''}>${s.cod} — ${esc(s.desc)}</option>`).join('')}</select></td>
+   <td><input type="number" min="0" value="${it.qtd}" class="t-in" oninput="PR.item(${i},'qtd',this.value)"></td><td>UM</td><td class="text-right" id="pr-un${i}"></td><td class="text-right font-semibold" id="pr-tt${i}"></td>
+   <td><button class="text-red-600 hover:text-red-800 cursor-pointer no-print" title="Remover" onclick="PR.del(${i})">✕</button></td></tr>`).join('')},
+ render(){$('pr-cli').innerHTML='<option value="">Selecione o cliente…</option>'+DB.clientes.map(c=>`<option value="${c.cod}" ${c.cod==P.cli?'selected':''}>${c.cod} — ${esc(c.nome)}</option>`).join('');
+   $('pr-tec').innerHTML=DB.tecnicos.map(t=>`<option value="${t.cod}" ${t.cod==P.tec?'selected':''}>${t.cod} — ${esc(t.nome)}</option>`).join('');
+   $('pr-num').value=P.num;$('pr-data').value=P.data;$('pr-obs').value=P.obs;$('pr-iss').value=P.iss;$('pr-desc').value=P.desc;PR.info();PR.itens();PR.calc();PR.lista()},
+ lista(){const tabs={clientes:'Clientes',servicos:'Serviços',tecnicos:'Vendedores',propostas:'Propostas salvas'};
+   $('pr-tabs').innerHTML=Object.entries(tabs).map(([k,v])=>`<button class="t-tab ${k===tabLista?'on':''}" onclick="tabLista='${k}';PR.lista()">${v} (${DB[k].length})</button>`).join('');
+   const cols={clientes:[['cod','Cód.'],['nome','Nome'],['cpf','CPF'],['whats','WhatsApp'],['cidade','Cidade'],['uf','UF']],servicos:[['cod','Cód.'],['desc','Serviço'],['preco','Preço']],tecnicos:[['cod','Cód.'],['nome','Nome']],propostas:[['num','Nº'],['data','Data'],['cliNome','Cliente'],['tecNome','Vendedor'],['total','Total']]}[tabLista];
+   const fm=(k,v)=>k==='preco'||k==='total'?R(v):k==='data'?fd(v):esc(v);
+   $('pr-lista').innerHTML=`<table><thead><tr>${cols.map(c=>`<th>${c[1]}</th>`).join('')}<th></th></tr></thead><tbody>${DB[tabLista].map((r,i)=>`<tr>${cols.map(c=>`<td>${fm(c[0],r[c[0]])}</td>`).join('')}<td class="whitespace-nowrap">${tabLista==='propostas'?`<button class="text-sky-700 font-semibold cursor-pointer" onclick="PR.abrir(${i})">Abrir</button> · `:''}<button class="text-red-600 cursor-pointer" onclick="PR.rm('${tabLista}',${i})">Excluir</button></td></tr>`).join('')||'<tr><td class="text-slate-400">Nenhum registro.</td></tr>'}</tbody></table>`},
+ rm(k,i){if(!confirm('Excluir este registro?'))return;DB[k].splice(i,1);persist();PR.render()},
+ abrir(i){P=JSON.parse(JSON.stringify(DB.propostas[i].dados));PR.render();scrollTo({top:0,behavior:'smooth'})},
+ cad(t){cadAtual=t;const d=CAD[t];$('pr-mt').textContent=d.t;$('pr-mf').innerHTML=d.f.map(f=>`<div><label class="t-lbl">${f[1]}</label><input name="${f[0]}" type="${f[2]||'text'}" step="0.01" required class="t-in"></div>`).join('');$('pr-modal').classList.replace('hidden','flex')},
+ fecha(){$('pr-modal').classList.replace('flex','hidden')},
+ okcad(e){e.preventDefault();const d=CAD[cadAtual],o={};d.f.forEach(f=>o[f[0]]=e.target.elements[f[0]].value.trim());if(o.preco!==undefined)o.preco=+o.preco;
+   o.cod=Math.max(0,...DB[d.k].map(x=>+x.cod))+1;if(cadAtual==='cliente')o.cad=iso(new Date());DB[d.k].push(o);persist();
+   if(cadAtual==='cliente')P.cli=o.cod;if(cadAtual==='tecnico')P.tec=o.cod;PR.fecha();PR.render();toast('Cadastro realizado: '+(o.nome||o.desc))},
+ snap(){const c=DB.clientes.find(x=>x.cod==P.cli),t=DB.tecnicos.find(x=>x.cod==P.tec),tt=PR.totais();
+   return{num:P.num,data:P.data,cliNome:c?c.nome:'',tecNome:t?t.nome:'',total:tt.total,dados:JSON.parse(JSON.stringify(P)),cliente:c||null,vendedor:t||null,itens:P.itens.filter(i=>i.cod).map(i=>({codigo:i.cod,descricao:DB.servicos.find(s=>s.cod==i.cod).desc,quantidade:i.qtd,unidade:'UM',valorUnitario:i.un,valorTotal:i.tot})),resumo:{subtotal:tt.sub,issPercent:+P.iss,iss:tt.issV,descontoPercent:+P.desc,desconto:tt.descV,totalAPagar:tt.total}}},
+ ok(){if(!P.cli){toast('Selecione um cliente.');return false}if(!P.itens.some(i=>i.cod)){toast('Adicione ao menos um serviço.');return false}return true},
+ salvar(quiet){if(!PR.ok())return false;const s=PR.snap(),i=DB.propostas.findIndex(x=>x.num===s.num);i>=0?DB.propostas[i]=s:DB.propostas.push(s);persist();PR.lista();if(!quiet)toast('Proposta salva.');return true},
+ async exportar(){if(!PR.salvar(true))return;const s=PR.snap();delete s.dados;await gravar(`${P.num}_${s.cliNome.split(' ')[0]}.json`,JSON.stringify({exportadoEm:new Date().toISOString(),proposta:s,cadastros:{clientes:DB.clientes,servicos:DB.servicos,vendedores:DB.tecnicos},propostasSalvas:DB.propostas.map(p=>{const q={...p};delete q.dados;return q})},null,2),'application/json')},
+ async csv(){if(!PR.ok())return;const s=PR.snap(),L=[['Proposta',s.num,'Data',fd(s.data)],['Cliente',s.cliNome,'Vendedor',s.tecNome],[],['Código','Descrição','Quant','Unid','Valor unitário','Valor total'],...s.itens.map(i=>[i.codigo,i.descricao,i.quantidade,i.unidade,i.valorUnitario.toFixed(2).replace('.',','),i.valorTotal.toFixed(2).replace('.',',')]),[],['','','','','Subtotal',s.resumo.subtotal.toFixed(2).replace('.',',')],['','','','','ISS',s.resumo.iss.toFixed(2).replace('.',',')],['','','','','Desconto',s.resumo.desconto.toFixed(2).replace('.',',')],['','','','','Total a pagar',s.resumo.totalAPagar.toFixed(2).replace('.',',')]];
+   await gravar(P.num+'.csv','\ufeff'+L.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(';')).join('\r\n'),'text/csv')},
+ chamado(){if(!PR.ok())return;const s=PR.snap();const row=document.createElement('tr');row.innerHTML=`<td>#CH-${ticketCount++}</td><td>${esc(s.cliNome)}</td><td>Proposta ${esc(s.num)}</td><td>6 Horas</td><td><span class="badge status-aberto">Aberto</span></td><td><button class="btn" style="padding:.3rem .6rem;font-size:.8rem" onclick="alterarStatus(this,'Em Atendimento')">Atender</button></td>`;
+   document.getElementById('chamadosTableBody').appendChild(row);PR.salvar(true);toast('Chamado aberto no sistema (Helpdesk N1).')}
+};
+/* ---- Painel ---- */
+const K=SEED.docs;let pnTab='ind';
+const tb=(h,r,cls)=>`<div class="overflow-x-auto ${cls||''}"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${r.map(x=>`<tr>${x.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+const doc=a=>`<article class="t-card max-w-none space-y-3 text-sm leading-relaxed text-slate-700">${a.map((p,i)=>/^(CLÁUSULA|\d+\.)/.test(p)||i===0?`<h3 class="pt-2 font-bold text-sky-900 ${i===0?'text-lg':''}">${esc(p)}</h3>`:`<p>${esc(p)}</p>`).join('')}</article>`;
+const PN={
+ ind(){const k=K.ind.map(r=>`<div class="t-card"><div class="text-xs font-semibold uppercase text-slate-500">${esc(r[0])}</div><div class="mt-1 text-2xl font-extrabold text-sky-900">${esc(r[1])}</div><div class="text-xs text-slate-500">Meta: ${esc(r[2])}</div><div class="mt-2 inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-800">${esc(r[3])}</div></div>`).join('');
+   const c=K.canais,tot=i=>sum(c,r=>r[i]);return`<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">${k}</div><h3 class="mt-6 mb-2 font-bold text-sky-900">Chamados por status e canal</h3>`+tb(['Canal','Aberto','Em Atendimento','Encerrado','Total'],[...c.map(r=>[r[0],`<span class="badge status-aberto">${r[1]}</span>`,`<span class="badge status-atendimento">${r[2]}</span>`,`<span class="badge status-encerrado">${r[3]}</span>`,'<b>'+(r[1]+r[2]+r[3])+'</b>']),['<b>TOTAL OPERACIONAL</b>',tot(1),tot(2),tot(3),'<b>'+(tot(1)+tot(2)+tot(3))+'</b>']])},
+ fin(){const i=K.inv,p=K.proj,f=sum(p,r=>r[1]*r[2]),l=sum(p,r=>r[1]*r[2]-r[3]);
+   return`<h3 class="mb-2 font-bold text-sky-900">Investimento inicial</h3>`+tb(['Item','Categoria','Qtd','Custo unit.','Total'],[...i.map(r=>[esc(r[0]),r[1],r[2],R(r[3]),R(r[2]*r[3])]),['<b>TOTAL DO INVESTIMENTO</b>','','','','<b>'+R(sum(i,r=>r[2]*r[3]))+'</b>']])+
+   `<h3 class="mt-6 mb-2 font-bold text-sky-900">Projeção de faturamento (12 meses)</h3>`+tb(['Mês','Clientes','Ticket médio','Faturamento','Custos','Resultado'],[...p.map(r=>[r[0],r[1],R(r[2]),R(r[1]*r[2]),R(r[3]),`<b class="${r[1]*r[2]-r[3]<0?'text-red-600':'text-emerald-700'}">${R(r[1]*r[2]-r[3])}</b>`]),['<b>TOTAL ANUAL</b>','','','<b>'+R(f)+'</b>','<b>'+R(sum(p,r=>r[3]))+'</b>','<b>'+R(l)+'</b>']])+
+   `<h3 class="mt-6 mb-2 font-bold text-sky-900">Clientes e faturamento</h3>`+tb(['ID','Razão social','Plano','Máquinas','Valor mensal','Fatura','Vencimento'],[...K.cf.map(r=>[r[0],esc(r[1]),r[2],r[3],R(r[4]),`<span class="badge ${r[5]==='PAGO'?'status-aberto':'status-atendimento'}">${r[5]}</span>`,r[6]]),['<b>Total</b>','','',sum(K.cf,r=>r[3]),'<b>'+R(sum(K.cf,r=>r[4]))+'</b>','','']])},
+ est(){const e=K.est,st={};e.forEach(r=>st[r[3]]=(st[r[3]]||0)+1);return`<div class="mb-4 grid gap-4 sm:grid-cols-3"><div class="t-card"><div class="t-lbl">Parque total</div><div class="text-2xl font-extrabold text-sky-900">${e.length} máquinas</div></div>${Object.entries(st).map(([k,v])=>`<div class="t-card"><div class="t-lbl">${esc(k)}</div><div class="text-2xl font-extrabold text-sky-900">${v}</div></div>`).join('')}</div><div class="max-h-96 overflow-y-auto">`+tb(['ID','Modelo','Nº série','Status','Cliente','Data'],e.map(r=>r.map((c,i)=>i===5?fd(c):esc(c))))+'</div>'},
+ con(){return doc(K.contrato)},rel(){return doc(K.relatorio)}};
+function pn(t){pnTab=t||pnTab;const n={ind:'Indicadores do Helpdesk',fin:'Plano financeiro',est:'Estoque (parque de 50)',con:'Contrato',rel:'Relatório de atividades'};
+ $('pn-tabs').innerHTML=Object.entries(n).map(([k,v])=>`<button class="t-tab ${k===pnTab?'on':''}" onclick="pn('${k}')">${v}</button>`).join('');$('pn-body').innerHTML=PN[pnTab]()}
+/* ---- Navegação ---- */
+const _show=showPage;
+showPage=function(id){_show(id);scrollTo(0,0);if(id==='proposta'){if(!P)PR.novo();else PR.render()}if(id==='painel')pn()};
+</script>
+
+</body>
+</html>

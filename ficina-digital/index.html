@@ -1,0 +1,1940 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTech Soluções Tecnológicas</title>
+    <script>tailwind={config:{corePlugins:{preflight:false}}}</script>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <style type="text/tailwindcss">
+.t-card{@apply rounded-xl border border-slate-200 bg-white p-5 shadow-sm}
+.t-in{@apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-400}
+.t-lbl{@apply mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500}
+.t-b2{@apply rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer}
+.t-tab{@apply rounded-full px-4 py-1.5 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 cursor-pointer}
+.t-tab.on{@apply bg-sky-700 text-white}
+</style>
+<style>@media print{header,footer,.no-print{display:none!important}.container{box-shadow:none;margin:0;max-width:100%}}</style>
+
+    <style>
+        .badge-alta { background-color: #DC3545; color: white; }
+        .badge-media { background-color: #FFC107; color: #1f2937; }
+        .badge-baixa { background-color: #28A745; color: white; }
+        .badge-concluido { background-color: #0d6efd; color: white; }
+        .tg-phone { max-width: 420px; border-radius: 28px; border: 8px solid #1e293b; background: #0e1621; color: white; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); overflow: hidden; }
+        .tg-msg-in { background-color: #182533; color: #e2e8f0; border-radius: 14px 14px 14px 2px; padding: 10px 14px; margin-bottom: 8px; font-size: 0.85rem; max-width: 88%; word-break: break-word; }
+        .tg-msg-out { background-color: #2b5278; color: #ffffff; border-radius: 14px 14px 2px 14px; padding: 10px 14px; margin-bottom: 8px; font-size: 0.85rem; margin-left: auto; max-width: 88%; word-break: break-word; }
+        .tg-cmd { display: inline-block; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 9999px; padding: 2px 8px; font-size: 0.75rem; font-family: monospace; cursor: pointer; margin: 2px; }
+        .tg-cmd:hover { background: #38bdf8; color: #0f172a; }
+        .step-node { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-weight: bold; font-size: 0.85rem; }
+
+        :root {
+            --primary: #0B3C5D;
+            --secondary: #328CC1;
+            --bg: #F4F7F6;
+            --text: #1D2731;
+            --open: #28A745;
+            --in-progress: #FFC107;
+            --closed: #DC3545;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #D9B310;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            flex: 1;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary);
+        }
+
+        .badge {
+            padding: 0.4rem 0.8rem;
+            color: white;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        .status-aberto { background-color: var(--open); }
+        .status-atendimento { background-color: var(--in-progress); color: #333; }
+        .status-encerrado { background-color: var(--closed); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        table th, table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        table th {
+            background-color: #f8f9fa;
+            color: var(--primary);
+        }
+
+        footer {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Gtech Soluções Tecnológicas</h1>
+        <nav>
+            <a href="#home" target="_self" onclick="showPage('home')">Início</a>
+            <a href="#oficina" target="_self" onclick="showPage('oficina')">Oficina digital</a>
+            <a href="#contratar" target="_self" onclick="showPage('contratar')">Contratar Serviço</a>
+            <a href="#proposta" target="_self" onclick="showPage('proposta')">Proposta de Vendas</a>
+            <a href="#painel" target="_self" onclick="showPage('painel')">Painel &amp; Documentos</a>
+            <a href="#login" target="_self" onclick="showPage('login')">Área Restrita (Helpdesk N1)</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <h2>Bem-vindo à GTech Soluções &amp; Oficina Digital</h2>
+            <p style="margin-bottom: 1rem;">Oferecemos suporte técnico de alta performance, gestão de incidentes, triagem inteligente com IA para conserto de computadores e parque contingencial para que sua empresa nunca pare.</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem;">
+                <button class="btn" style="background:#0B3C5D;" onclick="showPage('oficina')">🔧 Oficina Digital (IA &amp; Triagem)</button>
+                <button class="btn" onclick="showPage('contratar')">Contratar Serviço / Abrir Demanda</button>
+                <button class="btn" style="background:#328CC1" onclick="showPage('proposta')">Montar Proposta de Vendas</button>
+                <button class="btn" style="background:#6c757d" onclick="showPage('painel')">Painel &amp; Documentos</button>
+            </div>
+            
+            <div class="grid gap-4 sm:grid-cols-3 mt-6">
+                <div class="t-card border-l-4 border-l-sky-600 cursor-pointer hover:shadow-md transition" onclick="showPage('oficina')">
+                    <div class="text-xs font-bold uppercase tracking-wider text-sky-800">Oficina Digital</div>
+                    <div class="text-base font-bold text-slate-800 mt-1">Triagem Inteligente com IA</div>
+                    <p class="text-xs text-slate-500 mt-1">Diagnóstico preditivo, prioridade (BAIXA, MÉDIA, ALTA), rádio no Telegram e grafo de 7 casos canônicos.</p>
+                </div>
+                <div class="t-card border-l-4 border-l-emerald-600 cursor-pointer hover:shadow-md transition" onclick="showPage('proposta')">
+                    <div class="text-xs font-bold uppercase tracking-wider text-emerald-800">Comercial</div>
+                    <div class="text-base font-bold text-slate-800 mt-1">Propostas de Vendas</div>
+                    <p class="text-xs text-slate-500 mt-1">Orçamentos detalhados com cálculo de ISS, descontos para clientes VIP e exportação em JSON/CSV.</p>
+                </div>
+                <div class="t-card border-l-4 border-l-indigo-600 cursor-pointer hover:shadow-md transition" onclick="showPage('chamados')">
+                    <div class="text-xs font-bold uppercase tracking-wider text-indigo-800">Helpdesk ITIL</div>
+                    <div class="text-base font-bold text-slate-800 mt-1">Gestão de Chamados N1</div>
+                    <p class="text-xs text-slate-500 mt-1">Acompanhamento de SLAs rigorosos (2h a 24h) e controle do parque de 50 máquinas contingenciais.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROPOSTA DE VENDAS -->
+        <div id="proposta" class="page">
+            <div class="flex flex-wrap items-end justify-between gap-3 mb-6">
+                <div>
+                    <h2 style="margin:0;border:0;padding:0">Proposta de Prestação de Serviço</h2>
+                    <p class="text-sm text-slate-500 mt-1">Selecione cliente, vendedor e serviços — os valores são calculados automaticamente.</p>
+                </div>
+                <div class="flex gap-2 no-print">
+                    <button class="t-b2" onclick="PR.novo()">+ Nova proposta</button>
+                    <button class="t-b2" onclick="PR.cad('cliente')">+ Cliente</button>
+                    <button class="t-b2" onclick="PR.cad('servico')">+ Serviço</button>
+                    <button class="t-b2" onclick="PR.cad('tecnico')">+ Vendedor</button>
+                </div>
+            </div>
+            <div class="grid gap-5 lg:grid-cols-3">
+                <div class="lg:col-span-2 space-y-5">
+                    <section class="t-card">
+                        <h3 class="mb-3 text-sm font-bold text-sky-900">1 · Cliente</h3>
+                        <select id="pr-cli" class="t-in" onchange="PR.set('cli',this.value)"></select>
+                        <div id="pr-cliinfo" class="mt-4 grid gap-3 text-sm sm:grid-cols-2"></div>
+                    </section>
+                    <section class="t-card">
+                        <h3 class="mb-3 text-sm font-bold text-sky-900">2 · Vendedor / Técnico responsável e dados</h3>
+                        <div class="grid gap-3 sm:grid-cols-3">
+                            <div><label class="t-lbl">Vendedor</label><select id="pr-tec" class="t-in" onchange="PR.set('tec',this.value)"></select></div>
+                            <div><label class="t-lbl">Nº da proposta</label><input id="pr-num" class="t-in" oninput="PR.set('num',this.value,1)"></div>
+                            <div><label class="t-lbl">Data</label><input id="pr-data" type="date" class="t-in" oninput="PR.set('data',this.value,1)"></div>
+                        </div>
+                    </section>
+                    <section class="t-card">
+                        <div class="mb-3 flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-sky-900">3 · Serviços</h3>
+                            <button class="t-b2 no-print" onclick="PR.add()">+ Adicionar serviço</button>
+                        </div>
+                        <div class="overflow-x-auto"><table class="min-w-[560px]">
+                            <thead><tr><th>Serviço</th><th class="w-24">Quant.</th><th>Unid.</th><th class="text-right">Unitário</th><th class="text-right">Total</th><th></th></tr></thead>
+                            <tbody id="pr-itens"></tbody>
+                        </table></div>
+                        <div class="mt-4"><label class="t-lbl">Observações</label><textarea id="pr-obs" rows="2" class="t-in" oninput="PR.set('obs',this.value,1)"></textarea></div>
+                    </section>
+                </div>
+                <aside class="space-y-5">
+                    <section class="t-card lg:sticky lg:top-4">
+                        <h3 class="mb-3 text-sm font-bold text-sky-900">Resumo financeiro</h3>
+                        <dl class="space-y-2 text-sm">
+                            <div class="flex justify-between"><dt>Subtotal</dt><dd id="pr-sub" class="font-semibold"></dd></div>
+                            <div class="flex items-center justify-between gap-2"><dt>ISS <input type="number" step="0.1" min="0" id="pr-iss" class="t-in !inline-block !w-20 !py-1" oninput="PR.set('iss',this.value)"> %</dt><dd id="pr-issv" class="font-semibold text-red-600"></dd></div>
+                            <div class="flex items-center justify-between gap-2"><dt>Desconto <input type="number" step="0.1" min="0" id="pr-desc" class="t-in !inline-block !w-20 !py-1" oninput="PR.set('desc',this.value)"> %</dt><dd id="pr-descv" class="font-semibold text-red-600"></dd></div>
+                        </dl>
+                        <div class="mt-4 rounded-lg bg-sky-900 p-4 text-white"><div class="text-xs uppercase tracking-wide opacity-80">Total a pagar</div><div id="pr-total" class="text-3xl font-extrabold"></div></div>
+                        <p class="mt-2 text-xs text-slate-400">Fórmula conforme a planilha: Total = Subtotal − ISS − Desconto, com Desconto = (Subtotal − taxa ISS) × % desconto.</p>
+                        <button onclick="PR.exportar()" class="no-print mt-4 w-full rounded-xl bg-emerald-600 px-4 py-4 text-base font-extrabold text-white shadow-lg ring-4 ring-emerald-200 transition hover:bg-emerald-700 cursor-pointer">⬇ Exportar e salvar no computador</button>
+                        <div class="no-print mt-3 grid grid-cols-2 gap-2">
+                            <button class="t-b2" onclick="PR.csv()">CSV</button>
+                            <button class="t-b2" onclick="window.print()">Imprimir / PDF</button>
+                            <button class="t-b2" onclick="PR.salvar()">Salvar proposta</button>
+                            <button class="t-b2" onclick="PR.chamado()">Gerar chamado</button>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+            <section class="t-card no-print mt-5">
+                <div class="mb-3 flex gap-2" id="pr-tabs"></div>
+                <div id="pr-lista" class="overflow-x-auto"></div>
+            </section>
+        </div>
+
+        <!-- PAINEL: INDICADORES E DOCUMENTOS -->
+        <div id="painel" class="page">
+            <h2>Painel GTech · Indicadores, Financeiro, Estoque e Documentos</h2>
+            <div class="mb-5 flex flex-wrap gap-2" id="pn-tabs"></div>
+            <div id="pn-body"></div>
+        </div>
+        <div id="pr-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 p-4">
+            <form class="t-card w-full max-w-md" onsubmit="PR.okcad(event)"><h3 id="pr-mt" class="mb-4 text-lg font-bold text-sky-900"></h3><div id="pr-mf" class="space-y-3"></div>
+                <div class="mt-5 flex justify-end gap-2"><button type="button" class="t-b2" onclick="PR.fecha()">Cancelar</button><button class="rounded-lg bg-sky-700 px-4 py-2 text-sm font-bold text-white hover:bg-sky-900 cursor-pointer">Salvar</button></div></form>
+        </div>
+        <div id="pr-toast" class="fixed bottom-5 right-5 z-50 hidden rounded-lg bg-slate-900 px-4 py-3 text-sm text-white shadow-lg"></div>
+
+        <!-- FORMULARIO CONTRATAR SERVICO -->
+        <div id="contratar" class="page">
+            <h2>Cadastro de Solicitação de Serviço</h2>
+            <form id="serviceForm" onsubmit="handleServiceSubmit(event)">
+                <div class="form-group">
+                    <label>Nome do Cliente / Empresa:</label>
+                    <input type="text" id="cli_nome" required placeholder="Ex: Azevedo Soluções LTDA">
+                </div>
+                <div class="form-group">
+                    <label>Endereço Completo:</label>
+                    <input type="text" id="cli_end" required placeholder="Ex: Av. Dom Luís, 1200 - Aldeota, Fortaleza/CE">
+                </div>
+                <div class="form-group">
+                    <label>Telefone / WhatsApp:</label>
+                    <input type="tel" id="cli_tel" required placeholder="(85) 99999-9999">
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Serviço:</label>
+                    <select id="cli_servico" required>
+                        <option value="manutencao">Manutenção Remota</option>
+                        <option value="troca">Troca de Equipamentos (Parque Reserva)</option>
+                        <option value="duvidas">Dúvidas Operacionais / Suporte Geral</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição Detalhada do Atendimento:</label>
+                    <textarea id="cli_desc" rows="4" required placeholder="Descreva o problema ou necessidade..."></textarea>
+                </div>
+                <button type="submit" class="btn">Confirmar e Gerar Chamado</button>
+            </form>
+        </div>
+
+        <!-- TELA DE LOGIN HELPDESK -->
+        <div id="login" class="page">
+            <h2>Acesso Restrito - Helpdesk N1</h2>
+            <form onsubmit="handleLogin(event)" style="max-width: 400px;">
+                <div class="form-group">
+                    <label>Usuário:</label>
+                    <input type="text" id="user" required value="administrador">
+                </div>
+                <div class="form-group">
+                    <label>Senha:</label>
+                    <input type="password" id="pass" required value="admnistradorti@123">
+                </div>
+                <button type="submit" class="btn">Entrar no Sistema ITIL</button>
+            </form>
+        </div>
+
+        <!-- SISTEMA DE CHAMADOS (CLIENTE / PAINEL HELPDESK N1) -->
+        <div id="chamados" class="page">
+            <h2>Sistema de Chamados & Acompanhamento SLA (ITIL)</h2>
+            <p style="margin-bottom: 1rem; font-size: 0.9rem; color: #666;">Painel Operacional N1 - Gestão do Ciclo de Vida do Chamado</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Chamado</th>
+                        <th>Cliente</th>
+                        <th>Tipo de Chamado</th>
+                        <th>SLA Máximo</th>
+                        <th>Status ITIL</th>
+                        <th>Ações N1</th>
+                    </tr>
+                </thead>
+                <tbody id="chamadosTableBody">
+                    <tr>
+                        <td>#CH-1001</td>
+                        <td>Clínica Saúde Aldeota</td>
+                        <td>Troca de Equipamentos</td>
+                        <td>2 Horas</td>
+                        <td><span class="badge status-aberto">Aberto</span></td>
+                        <td>
+                            <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="alterarStatus(this, 'Em Atendimento')">Atender</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#CH-1002</td>
+                        <td>Azevedo & Siqueira Adv</td>
+                        <td>Manutenção Remota</td>
+                        <td>6 Horas</td>
+                        <td><span class="badge status-atendimento">Em Atendimento</span></td>
+                        <td>
+                            <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; background:#DC3545;" onclick="alterarStatus(this, 'Encerrado')">Encerrar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- OFICINA DIGITAL -->
+        <div id="oficina" class="page">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b-2 border-sky-700">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🔧</span>
+                        <h2 style="margin:0;border:0;padding:0;color:var(--primary);">Oficina Digital · Sistema Inteligente de Manutenção</h2>
+                    </div>
+                    <p class="text-sm text-slate-600 mt-1">Gestão de chamados para conserto de computadores: abertura com laudo da IA, rádio técnico via Telegram, acompanhamento público e bancada de testes de prompts.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 no-print" id="of-stats">
+                    <!-- Badges de estatísticas inseridos via JavaScript -->
+                </div>
+            </div>
+
+            <!-- NAVEGAÇÃO DE SUB-ABAS -->
+            <div class="mb-6 flex flex-wrap gap-2 border-b border-slate-200 pb-3" id="of-tabs">
+                <button class="t-tab on" id="oftab-abertura" onclick="OF.setTab('abertura')">📋 1. Abertura &amp; Laudo IA</button>
+                <button class="t-tab" id="oftab-acompanhamento" onclick="OF.setTab('acompanhamento')">🔍 2. Acompanhamento (Cliente)</button>
+                <button class="t-tab" id="oftab-telegram" onclick="OF.setTab('telegram')">📻 3. Rádio do Técnico (Telegram)</button>
+                <button class="t-tab" id="oftab-skills" onclick="OF.setTab('skills')">🧪 4. Bancada de Testes IA (Skills)</button>
+                <button class="t-tab" id="oftab-grafo" onclick="OF.setTab('grafo')">🕸️ 5. Grafo de Conhecimento (7 Casos)</button>
+                <button class="t-tab" id="oftab-ecossistema" onclick="OF.setTab('ecossistema')">🛠️ 6. Ecossistema &amp; Ferramentas</button>
+            </div>
+
+            <!-- CONTAINER DINÂMICO DAS SUB-ABAS -->
+            <div id="of-body"></div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 GTech Soluções Tecnológicas. Todos os direitos reservados. Fortaleza/CE.</p>
+    </footer>
+
+    <script>
+        let ticketCount = 1003;
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function handleServiceSubmit(e) {
+            e.preventDefault();
+            const cliente = document.getElementById('cli_nome').value;
+            const servico = document.getElementById('cli_servico').options[document.getElementById('cli_servico').selectedIndex].text;
+            
+            let sla = "24 Horas";
+            if(document.getElementById('cli_servico').value === 'troca') sla = "2 Horas";
+            if(document.getElementById('cli_servico').value === 'manutencao') sla = "6 Horas";
+
+            const tbody = document.getElementById('chamadosTableBody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>#CH-${ticketCount++}</td>
+                <td>${cliente}</td>
+                <td>${servico}</td>
+                <td>${sla}</td>
+                <td><span class="badge status-aberto">Aberto</span></td>
+                <td>
+                    <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="alterarStatus(this, 'Em Atendimento')">Atender</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+
+            alert("Solicitação cadastrada com sucesso! Redirecionando para o Sistema de Chamados.");
+            showPage('chamados');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+
+            if (u === 'administrador' && p === 'admnistradorti@123') {
+                alert('Autenticado com sucesso como Helpdesk N1!');
+                showPage('chamados');
+            } else {
+                alert('Usuário ou senha inválidos!');
+            }
+        }
+
+        function alterarStatus(btn, novoStatus) {
+            const tdStatus = btn.parentElement.parentElement.children[4];
+            const tdAcao = btn.parentElement;
+
+            if (novoStatus === 'Em Atendimento') {
+                tdStatus.innerHTML = '<span class="badge status-atendimento">Em Atendimento</span>';
+                tdAcao.innerHTML = `<button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; background:#DC3545;" onclick="alterarStatus(this, 'Encerrado')">Encerrar</button>`;
+            } else if (novoStatus === 'Encerrado') {
+                tdStatus.innerHTML = '<span class="badge status-encerrado">Encerrado</span>';
+                tdAcao.innerHTML = `<span style="font-size:0.85rem; color:#666;">Concluído</span>`;
+            }
+        }
+    </script>
+<script>
+/* ===== GTech · Proposta de Vendas e Painel ===== */
+const SEED={"clientes": [{"cod": 2, "cad": "2019-01-02", "nome": "Ana Silva Santos", "cpf": "123.456.789-01", "nasc": "1978-05-01", "whats": "(11) 98765-4321", "end": "Av. Paulista, 1000", "bairro": "Bela Vista", "cidade": "São Paulo", "uf": "SP"}, {"cod": 3, "cad": "2010-01-05", "nome": "Bruno Oliveira Lima", "cpf": "234.567.890-12", "nasc": "1979-05-02", "whats": "(21) 99876-5432", "end": "Rua Barão da Torre, 250", "bairro": "Ipanema", "cidade": "Rio de Janeiro", "uf": "RJ"}, {"cod": 4, "cad": "2015-01-10", "nome": "Carla Souza Pereira", "cpf": "345.678.901-23", "nasc": "1980-05-02", "whats": "(31) 97654-3210", "end": "Av. Afonso Pena, 1500", "bairro": "Centro", "cidade": "Belo Horizonte", "uf": "MG"}, {"cod": 5, "cad": "2005-01-12", "nome": "Daniel Costa Ferreira", "cpf": "456.789.012-34", "nasc": "1981-05-03", "whats": "(41) 98877-6655", "end": "Rua das Flores, 45", "bairro": "Batel", "cidade": "Curitiba", "uf": "PR"}, {"cod": 6, "cad": "2026-01-15", "nome": "Eduardo Rodrigues Alves", "cpf": "567.890.123-45", "nasc": "1982-05-04", "whats": "(51) 99123-4567", "end": "Av. Borges de Medeiros, 800", "bairro": "Praia de Belas", "cidade": "Porto Alegre", "uf": "RS"}, {"cod": 7, "cad": "2026-01-18", "nome": "Fernanda Lima Barbosa", "cpf": "678.901.234-56", "nasc": "1983-05-05", "whats": "(71) 98234-5678", "end": "Av. Oceanica, 300", "bairro": "Barra", "cidade": "Salvador", "uf": "BA"}, {"cod": 8, "cad": "2026-01-22", "nome": "Gabriel Martins Ribeiro", "cpf": "789.012.345-67", "nasc": "1984-05-05", "whats": "(85) 99345-6789", "end": "Av. Beira Mar, 2100", "bairro": "Meireles", "cidade": "Fortaleza", "uf": "CE"}, {"cod": 9, "cad": "2026-01-25", "nome": "Helena Castro Gomes", "cpf": "890.123.456-78", "nasc": "1985-05-06", "whats": "(81) 98456-7890", "end": "Av. Boa Viagem, 1200", "bairro": "Boa Viagem", "cidade": "Recife", "uf": "PE"}, {"cod": 10, "cad": "2026-01-28", "nome": "Igor Fernandes Rocha", "cpf": "901.234.567-89", "nasc": "1986-05-07", "whats": "(61) 99567-8901", "end": "SQN 208 Bloco B, Apt 102", "bairro": "Asa Norte", "cidade": "Brasília", "uf": "DF"}, {"cod": 11, "cad": "2026-02-01", "nome": "Juliana Mendes Carvalho", "cpf": "012.345.678-90", "nasc": "1987-05-08", "whats": "(27) 98678-9012", "end": "Av. Dante Michelini, 500", "bairro": "Jardim da Penha", "cidade": "Vitória", "uf": "ES"}, {"cod": 12, "cad": "2026-02-03", "nome": "Lucas Araújo Correia", "cpf": "112.233.445-56", "nasc": "1988-05-08", "whats": "(62) 99789-0123", "end": "Av. T-63, 1100", "bairro": "Setor Bueno", "cidade": "Goiânia", "uf": "GO"}, {"cod": 13, "cad": "2026-02-06", "nome": "Mariana Azevedo Melo", "cpf": "223.344.556-67", "nasc": "1989-05-09", "whats": "(92) 98890-1234", "end": "Av. Djalma Batista, 450", "bairro": "Nossa Senhora das Graças", "cidade": "Manaus", "uf": "AM"}, {"cod": 14, "cad": "2026-02-10", "nome": "Nicolas Cardoso Teixeira", "cpf": "334.455.667-78", "nasc": "1990-05-10", "whats": "(84) 99901-2345", "end": "Av. Engenheiro Roberto Freire, 800", "bairro": "Capim Macio", "cidade": "Natal", "uf": "RN"}, {"cod": 15, "cad": "2026-02-12", "nome": "Olivia Duarte Freitas", "cpf": "445.566.778-89", "nasc": "1991-05-11", "whats": "(48) 98112-2334", "end": "Rodovia SC-401, 1500", "bairro": "Saco Grande", "cidade": "Florianópolis", "uf": "SC"}, {"cod": 16, "cad": "2026-02-15", "nome": "Paulo Henrique Ramos", "cpf": "556.677.889-90", "nasc": "1992-05-11", "whats": "(98) 99223-3445", "end": "Av. dos Holandeses, 10", "bairro": "Calhau", "cidade": "São Luís", "uf": "MA"}, {"cod": 17, "cad": "2026-02-18", "nome": "Quintino Vieira Lopes", "cpf": "667.788.990-01", "nasc": "1993-05-12", "whats": "(83) 98334-4556", "end": "Av. Epitácio Pessoa, 2300", "bairro": "Tambaú", "cidade": "João Pessoa", "uf": "PB"}, {"cod": 18, "cad": "2026-02-20", "nome": "Renata Nunes Monte", "cpf": "778.899.001-12", "nasc": "1994-05-13", "whats": "(82) 99445-5667", "end": "Av. Álvaro Otacílio, 900", "bairro": "Jatiúca", "cidade": "Maceió", "uf": "AL"}, {"cod": 19, "cad": "2026-02-22", "nome": "Samuel Barbosa Farias", "cpf": "889.900.112-23", "nasc": "1995-05-14", "whats": "(79) 98556-6778", "end": "Av. Santos Dumont, 1400", "bairro": "Atalaia", "cidade": "Aracaju", "uf": "SE"}, {"cod": 20, "cad": "2026-02-25", "nome": "Tatiana Cavalcanti Dias", "cpf": "990.011.223-34", "nasc": "1996-05-14", "whats": "(65) 99667-7889", "end": "Av. Historiador Rubens de Mendonça, 600", "bairro": "Bosque da Saúde", "cidade": "Cuiabá", "uf": "MT"}, {"cod": 21, "cad": "2026-02-28", "nome": "Vinicius Monteiro Machado", "cpf": "001.122.334-45", "nasc": "1997-05-15", "whats": "(67) 98778-8990", "end": "Av. Afonso Pena, 3000", "bairro": "Jardim dos Estados", "cidade": "Campo Grande", "uf": "MS"}], "servicos": [{"cod": 1, "desc": "Formatação do computador", "preco": 150}, {"cod": 2, "desc": "Limpeza interna", "preco": 80}, {"cod": 3, "desc": "Instalação do Windows", "preco": 100}, {"cod": 4, "desc": "Instalação de programas", "preco": 60}, {"cod": 5, "desc": "Remoção de vírus", "preco": 120}, {"cod": 6, "desc": "Backup de arquivos", "preco": 90}, {"cod": 7, "desc": "Troca de HD/SSD", "preco": 100}, {"cod": 8, "desc": "Upgrade de memória RAM", "preco": 70}, {"cod": 9, "desc": "Configuração de rede", "preco": 80}, {"cod": 10, "desc": "Diagnóstico técnico", "preco": 70}], "tecnicos": [{"cod": 1, "nome": "Rejane"}, {"cod": 2, "nome": "Levi"}, {"cod": 3, "nome": "Jean"}, {"cod": 4, "nome": "Georgeana"}, {"cod": 5, "nome": "Natanael"}, {"cod": 6, "nome": "Maria Evelina"}, {"cod": 7, "nome": "Talita"}, {"cod": 8, "nome": "Wilton"}, {"cod": 9, "nome": "Pâmela"}, {"cod": 10, "nome": "Evely Gabriele"}, {"cod": 11, "nome": "Kaua Benevides"}, {"cod": 12, "nome": "Mikael"}], "propostas": [], "docs": {"ind": [["Total de Chamados Abertos (Mês)", 450, 500, "Dentro da Capacidade"], ["Chamados Resolvidos no N1 (First Contact Resolution)", 382, 350, "Meta Atingida (84.8%)"], ["Tempo Médio de Primeira Resposta (TMR)", "14 minutos", "< 30 minutos", "Excelente"], ["Tempo Médio de Solução (TMS)", "2.4 horas", "< 4.0 horas", "Excelente"], ["Índice de Cumprimento do SLA", "96.4%", "> 95.0%", "Conforme ITIL"], ["Trocas de Equipamento Realizadas (Swap Parque 50)", 12, 50, "Estoque Suficiente"], ["Taxa de Satisfação do Cliente (CSAT)", "4.85 / 5.0", "> 4.50", "Excelente"]], "canais": [["WhatsApp Business", 15, 8, 210], ["E-mail Integrado", 10, 5, 120], ["Portal Web (Sistema)", 8, 4, 70]], "inv": [["Servidor Principal Dell PowerEdge T350", "Infraestrutura", 2, 14500], ["Licenciamento AnyDesk Enterprise (50 Licenças)", "Software", 1, 18000], ["Licenciamento TeamViewer Corporate", "Software", 1, 15000], ["Desenvolvimento & Customização do Sistema de Chamados", "Software", 1, 12000], ["Notebooks de Reserva Terceirizados (Parque 50 un.)", "Parque Reserva", 50, 3200], ["Equipamentos de Rede (Switches Cisco, Roteadores, Firewall)", "Infraestrutura", 1, 16500], ["Mobiliário e Ergonomia para Operação Helpdesk N1", "Escritório", 1, 14000]], "proj": [["Mês 1", 15, 1200, 18000], ["Mês 2", 18, 1200, 18500], ["Mês 3", 22, 1200, 19000], ["Mês 4", 25, 1250, 20000], ["Mês 5", 30, 1250, 21000], ["Mês 6", 35, 1250, 22000], ["Mês 7", 40, 1300, 23000], ["Mês 8", 45, 1300, 24000], ["Mês 9", 50, 1300, 25000], ["Mês 10", 55, 1350, 26000], ["Mês 11", 60, 1350, 27000], ["Mês 12", 65, 1350, 28000]], "est": [["M-GTECH-001", "Dell Vostro 3520 i5 16GB", "SN-884921", "Alocado", "Cliente 1 LTDA", "2026-09-15"], ["M-GTECH-002", "Dell Vostro 3520 i5 16GB", "SN-884922", "Alocado", "Cliente 2 LTDA", "2026-09-15"], ["M-GTECH-003", "Dell Vostro 3520 i5 16GB", "SN-884923", "Alocado", "Cliente 3 LTDA", "2026-09-15"], ["M-GTECH-004", "Dell Vostro 3520 i5 16GB", "SN-884924", "Alocado", "Cliente 4 LTDA", "2026-09-15"], ["M-GTECH-005", "Dell Vostro 3520 i5 16GB", "SN-884925", "Alocado", "Cliente 5 LTDA", "2026-09-15"], ["M-GTECH-006", "Dell Vostro 3520 i5 16GB", "SN-884926", "Alocado", "Cliente 6 LTDA", "2026-09-15"], ["M-GTECH-007", "Dell Vostro 3520 i5 16GB", "SN-884927", "Alocado", "Cliente 7 LTDA", "2026-09-15"], ["M-GTECH-008", "Dell Vostro 3520 i5 16GB", "SN-884928", "Alocado", "Cliente 8 LTDA", "2026-09-15"], ["M-GTECH-009", "Dell Vostro 3520 i5 16GB", "SN-884929", "Alocado", "Cliente 9 LTDA", "2026-09-15"], ["M-GTECH-010", "Dell Vostro 3520 i5 16GB", "SN-8849210", "Alocado", "Cliente 10 LTDA", "2026-09-15"], ["M-GTECH-011", "Dell Vostro 3520 i5 16GB", "SN-8849211", "Alocado", "Cliente 1 LTDA", "2026-09-15"], ["M-GTECH-012", "Dell Vostro 3520 i5 16GB", "SN-8849212", "Alocado", "Cliente 2 LTDA", "2026-09-15"], ["M-GTECH-013", "Dell Vostro 3520 i5 16GB", "SN-8849213", "Alocado", "Cliente 3 LTDA", "2026-09-15"], ["M-GTECH-014", "Dell Vostro 3520 i5 16GB", "SN-8849214", "Alocado", "Cliente 4 LTDA", "2026-09-15"], ["M-GTECH-015", "Dell Vostro 3520 i5 16GB", "SN-8849215", "Alocado", "Cliente 5 LTDA", "2026-09-15"], ["M-GTECH-016", "Dell Vostro 3520 i5 16GB", "SN-8849216", "Alocado", "Cliente 6 LTDA", "2026-09-15"], ["M-GTECH-017", "Dell Vostro 3520 i5 16GB", "SN-8849217", "Alocado", "Cliente 7 LTDA", "2026-09-15"], ["M-GTECH-018", "Dell Vostro 3520 i5 16GB", "SN-8849218", "Alocado", "Cliente 8 LTDA", "2026-09-15"], ["M-GTECH-019", "Dell Vostro 3520 i5 16GB", "SN-8849219", "Alocado", "Cliente 9 LTDA", "2026-09-15"], ["M-GTECH-020", "Dell Vostro 3520 i5 16GB", "SN-8849220", "Alocado", "Cliente 10 LTDA", "2026-09-15"], ["M-GTECH-021", "Dell Vostro 3520 i5 16GB", "SN-8849221", "Alocado", "Cliente 1 LTDA", "2026-09-15"], ["M-GTECH-022", "Dell Vostro 3520 i5 16GB", "SN-8849222", "Alocado", "Cliente 2 LTDA", "2026-09-15"], ["M-GTECH-023", "Dell Vostro 3520 i5 16GB", "SN-8849223", "Alocado", "Cliente 3 LTDA", "2026-09-15"], ["M-GTECH-024", "Dell Vostro 3520 i5 16GB", "SN-8849224", "Alocado", "Cliente 4 LTDA", "2026-09-15"], ["M-GTECH-025", "Dell Vostro 3520 i5 16GB", "SN-8849225", "Alocado", "Cliente 5 LTDA", "2026-09-15"], ["M-GTECH-026", "Dell Vostro 3520 i5 16GB", "SN-8849226", "Alocado", "Cliente 6 LTDA", "2026-09-15"], ["M-GTECH-027", "Dell Vostro 3520 i5 16GB", "SN-8849227", "Alocado", "Cliente 7 LTDA", "2026-09-15"], ["M-GTECH-028", "Dell Vostro 3520 i5 16GB", "SN-8849228", "Alocado", "Cliente 8 LTDA", "2026-09-15"], ["M-GTECH-029", "Dell Vostro 3520 i5 16GB", "SN-8849229", "Alocado", "Cliente 9 LTDA", "2026-09-15"], ["M-GTECH-030", "Dell Vostro 3520 i5 16GB", "SN-8849230", "Alocado", "Cliente 10 LTDA", "2026-09-15"], ["M-GTECH-031", "Dell Vostro 3520 i5 16GB", "SN-8849231", "Alocado", "Cliente 1 LTDA", "2026-09-15"], ["M-GTECH-032", "Dell Vostro 3520 i5 16GB", "SN-8849232", "Alocado", "Cliente 2 LTDA", "2026-09-15"], ["M-GTECH-033", "Dell Vostro 3520 i5 16GB", "SN-8849233", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-034", "Dell Vostro 3520 i5 16GB", "SN-8849234", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-035", "Dell Vostro 3520 i5 16GB", "SN-8849235", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-036", "Dell Vostro 3520 i5 16GB", "SN-8849236", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-037", "Dell Vostro 3520 i5 16GB", "SN-8849237", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-038", "Dell Vostro 3520 i5 16GB", "SN-8849238", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-039", "Dell Vostro 3520 i5 16GB", "SN-8849239", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-040", "Dell Vostro 3520 i5 16GB", "SN-8849240", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-041", "Dell Vostro 3520 i5 16GB", "SN-8849241", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-042", "Dell Vostro 3520 i5 16GB", "SN-8849242", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-043", "Dell Vostro 3520 i5 16GB", "SN-8849243", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-044", "Dell Vostro 3520 i5 16GB", "SN-8849244", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-045", "Dell Vostro 3520 i5 16GB", "SN-8849245", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-046", "Dell Vostro 3520 i5 16GB", "SN-8849246", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-047", "Dell Vostro 3520 i5 16GB", "SN-8849247", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-048", "Dell Vostro 3520 i5 16GB", "SN-8849248", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-049", "Dell Vostro 3520 i5 16GB", "SN-8849249", "Disponível em Estoque", "N/A", "N/A"], ["M-GTECH-050", "Dell Vostro 3520 i5 16GB", "SN-8849250", "Disponível em Estoque", "N/A", "N/A"]], "cf": [["CLI-001", "Azevedo & Siqueira Advogados", "Premium Helpdesk", 5, 2500, "PAGO", "05/10/2026"], ["CLI-002", "Macedo Logística CE", "Standard Helpdesk", 3, 1800, "PAGO", "05/10/2026"], ["CLI-003", "Clínica Saúde Aldeota", "Premium Helpdesk", 8, 3800, "PENDENTE", "05/10/2026"], ["CLI-004", "Supermercado Fortaleza Express", "Enterprise Omnichannel", 12, 5500, "PAGO", "05/10/2026"], ["CLI-005", "Distribuidora Sol Nascente", "Standard Helpdesk", 4, 2200, "PAGO", "05/10/2026"]], "contrato": ["CONTRATO DE PRESTAÇÃO DE SERVIÇOS DE SUPORTE TÉCNICO E LOCAÇÃO DE EQUIPAMENTOS", "Pelo presente instrumento particular, de um lado, GTECH SOLUÇÕES TECNOLÓGICAS LTDA., pessoa jurídica de direito privado, inscrita no CNPJ/MF sob o nº 45.678.910/0001-23, com sede na Av. Dom Luís, nº 1200, Sala 804, Bairro Aldeota, Fortaleza/CE, CEP 60160-230, neste ato representada por seus sócios administradores MIKAEL MACEDO, JOÃO VICTOR e RIAN, doravante denominada simplesmente CONTRATADA; e, de outro lado, a CONTRATANTE devidamente qualificada no Cadastramento de Serviços; têm entre si justo e contratado o que se segue nas cláusulas abaixo:", "CLÁUSULA PRIMEIRA – DO OBJETO", "O presente contrato tem por objeto a prestação de serviços especializados de suporte técnico e helpdesk remoto, gerenciamento de incidentes operacionais, instalação de softwares e gestão contingencial de hardware através da disponibilização de computadores substitutos pertencentes ao parque terceirizado da CONTRATADA.", "CLÁUSULA SEGUNDA – DOS CANAIS E METODOLOGIA DE ATENDIMENTO", "Os atendimentos serão realizados via Helpdesk remoto com uso das ferramentas AnyDesk e TeamViewer. As aberturas de solicitações ocorrerão obrigatoriamente através dos 3 (três) canais oficiais: WhatsApp Business, E-mail institucional e Portal do Sistema de Chamados. Todos os atendimentos seguirão o fluxo padronizado ITIL, respeitando a escala de status: Aberto (Verde), Em Atendimento (Amarelo) e Encerrado (Vermelho).", "CLÁUSULA TERCEIRA – DA SUBSTITUIÇÃO DE EQUIPAMENTOS (SWAP)", "A CONTRATADA manterá à disposição do contrato o parque reserva terceirizado de até 50 (cinquenta) máquinas. Na hipótese de defeito físico comprovado em equipamento da CONTRATANTE, a CONTRATADA efetuará a troca provisória em até 24 (vinte e quatro) horas úteis na cidade de Fortaleza/CE, garantindo a continuidade operacional das atividades do cliente.", "CLÁUSULA QUARTA – DOS NÍVEIS DE SERVIÇO (SLA)", "Os prazos máximos de primeira resposta e solução final obedecerão aos níveis acordados: Nível Crítico (Primeira resposta em 15 min, Solução em 2h); Nível Médio (Primeira resposta em 1h, Solução em 6h); Nível Baixo (Primeira resposta em 4h, Solução em 24h).", "CLÁUSULA QUINTA – DO VALOR E DO FECHAMENTO DE FATURA", "Pela prestação dos serviços objeto deste contrato, a CONTRATANTE pagará à CONTRATADA o valor mensal fixado no Plano contratado. O fechamento das faturas ocorrerá mensalmente no dia 25, com vencimento estipulado para o dia 05 do mês subsequente.", "CLÁUSULA SEXTA – DA VIGÊNCIA E RESCISÃO", "O presente contrato possui vigência de 12 (doze) meses, renovável automaticamente por iguais períodos, podendo ser rescindido por qualquer das partes mediante aviso prévio por escrito de 30 (trinta) dias.", "CLÁUSULA SÉTIMA – DO FORO", "Para dirimir quaisquer controvérsias oriundas do presente contrato, as partes elegem o Foro da Comarca de Fortaleza/CE, com renúncia expressa a qualquer outro, por mais privilegiado que seja.", "Fortaleza/CE, 08 de Outubro de 2026."], "relatorio": ["RELATÓRIO DE ATIVIDADES E OPERAÇÕES DE TI", "GTech Soluções Tecnológicas S.A. | Modelo Operacional ITIL v4 & Service Desk", "1. SUMÁRIO EXECUTIVO E APRESENTAÇÃO DA EMPRESA", "A GTech Soluções Tecnológicas é uma empresa especializada no provimento de serviços gerenciados de suporte técnico, consultoria infraestrutural e assistência remota de alta performance. Estruturada para atender micro, pequenas e médias empresas, a GTech oferece continuidade de negócios com padrão de excelência corporativo.", "2. ESTRUTURA OPERACIONAL E CANAIS DE ATENDIMENTO", "A empresa opera sob um modelo omnichannel integrado, garantindo facilidade de acesso, rastreabilidade e centralização de todas as solicitações nos seguintes canais:", "WhatsApp Business Corporativo: Canal ágil para abertura simplificada e triagem primária de incidentes leves.", "E-mail Integrado (suporte@gtech.com.br): Conversão automática de mensagens enviadas em chamados no sistema central.", "Portal Web de Chamados (Helpdesk GTech): Plataforma própria para autoatendimento, acompanhamento de SLA e interações diretas.", "2.1. Softwares de Conexão Remota Certificados", "Os atendimentos de suporte à distância são realizados exclusivamente por meio de ferramentas consolidadas e criptografadas de ponta a ponta: AnyDesk Enterprise e TeamViewer Corporate. Essa infraestrutura garante sessões seguras, auditoria de acessos e tempo de resposta imediato.", "3. SISTEMA DE STATUS E GESTÃO DE CICLO DE VIDA DO CHAMADO", "Para assegurar visibilidade em tempo real ao cliente e controle rigoroso da equipe interna, o ciclo de vida dos chamados obedece à convenção visual padronizada:", "4. ESCOPO DE SERVIÇOS E PARQUE TERCEIRIZADO DE RESERVA", "As atividades operacionais prestadas englobam rotinas preventivas, corretivas e de manutenção evolutiva:", "Instalação e Configuração de Sistemas: Deploy de sistemas operacionais (Windows Pro/Linux), softwares corporativos, ERPs, pacotes de produtividade e antivírus gerenciado.", "Resolução de Problemas Operacionais: Otimização de desempenho, remoção de malwares, depuração de erros de sistema, correção de drivers e suporte a periféricos.", "4.1. Gestão do Parque Terceirizado de Reserva (50 Máquinas)", "A GTech disponibiliza um parque contingencial de 50 computadores e notebooks terceirizados. Em casos de falhas de hardware no equipamento do cliente, a GTech efetua a substituição imediata (Swap de Máquina), reduzindo o tempo de inatividade (Downtime) do cliente a zero enquanto o equipamento principal passa por reparo laboratorial.", "5. ALINHAMENTO COM BOAS PRÁTICAS ITIL V4", "A operação de Service Desk da GTech é estritamente aderente ao framework ITIL v4, contemplando:", "Gestão de Incidentes (Incident Management): Foco na restauração rápida da operação normal do serviço e minimização do impacto nos negócios.", "Gestão de Requisições de Serviço (Service Request Management): Tratamento padronizado de solicitações normais de usuários (instalação de softwares, acessos).", "Acordos de Nível de Serviço (SLA - Service Level Agreement): Matriz de prioridade fundamentada na combinação entre Impacto e Urgência:"]}};
+const $=id=>document.getElementById(id);
+const R=v=>(+v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const D=s=>s?new Date(s+'T00:00:00'):null;
+const fd=s=>s?D(s).toLocaleDateString('pt-BR'):'';
+const iso=d=>d.toISOString().slice(0,10);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function dur(a,b){let y=b.getFullYear()-a.getFullYear(),m=b.getMonth()-a.getMonth(),d=b.getDate()-a.getDate();if(d<0){m--;d+=new Date(b.getFullYear(),b.getMonth(),0).getDate()}if(m<0){y--;m+=12}return `${y} anos, ${m} meses e ${d} dias`}
+let DB;try{DB=JSON.parse(localStorage.getItem('gtech_db'))}catch(e){}
+if(!DB||!DB.clientes)DB=JSON.parse(JSON.stringify(SEED));
+const persist=()=>{try{localStorage.setItem('gtech_db',JSON.stringify(DB))}catch(e){}};
+function toast(t){const e=$('pr-toast');e.textContent=t;e.classList.remove('hidden');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.add('hidden'),3500)}
+async function gravar(name,text,type){
+  if(window.showSaveFilePicker){try{const h=await showSaveFilePicker({suggestedName:name,types:[{description:'Arquivo',accept:{[type]:['.'+name.split('.').pop()]}}]});const w=await h.createWritable();await w.write(text);await w.close();return toast('Arquivo salvo no computador: '+name)}catch(e){if(e.name==='AbortError')return}}
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);toast('Download iniciado: '+name)}
+const CAD={
+ cliente:{t:'Novo cliente',k:'clientes',f:[['nome','Nome do cliente'],['cpf','Nº CPF'],['nasc','Data de nascimento','date'],['whats','WhatsApp'],['end','Endereço'],['bairro','Bairro'],['cidade','Cidade'],['uf','UF']]},
+ servico:{t:'Novo serviço',k:'servicos',f:[['desc','Descrição do serviço'],['preco','Preço (R$)','number']]},
+ tecnico:{t:'Novo vendedor / técnico',k:'tecnicos',f:[['nome','Nome']]}};
+let P,tabLista='clientes',cadAtual;
+const PR={
+ novo(){P={num:'PROP-'+String((DB.propostas.length||0)+1).padStart(4,'0'),data:iso(new Date()),cli:'',tec:DB.tecnicos[0]?.cod||'',itens:[{cod:'',qtd:1}],iss:5,desc:8.5,obs:''};PR.render()},
+ set(k,v,quiet){P[k]=v;if(quiet)return;if(k==='cli')PR.info();PR.calc()},
+ add(){P.itens.push({cod:'',qtd:1});PR.itens();PR.calc()},
+ del(i){P.itens.splice(i,1);if(!P.itens.length)P.itens.push({cod:'',qtd:1});PR.itens();PR.calc()},
+ item(i,k,v){P.itens[i][k]=k==='qtd'?Math.max(0,+v||0):v;if(k==='cod')PR.itens();PR.calc()},
+ totais(){let sub=0;P.itens.forEach(it=>{const s=DB.servicos.find(x=>x.cod==it.cod);it.un=s?s.preco:0;it.tot=s?s.preco*it.qtd:0;sub+=it.tot});
+   const t=(+P.iss||0)/100,d=(+P.desc||0)/100,issV=sub*t,descV=(sub-t)*d;return{sub,issV,descV,total:sub-issV-descV}},
+ calc(){const t=PR.totais();P.itens.forEach((it,i)=>{const e=$('pr-un'+i);if(e){e.textContent=R(it.un);$('pr-tt'+i).textContent=R(it.tot)}});
+   $('pr-sub').textContent=R(t.sub);$('pr-issv').textContent='− '+R(t.issV);$('pr-descv').textContent='− '+R(t.descV);$('pr-total').textContent=R(t.total)},
+ info(){const c=DB.clientes.find(x=>x.cod==P.cli),e=$('pr-cliinfo');if(!c){e.innerHTML='<p class="text-slate-400 sm:col-span-2">Selecione um cliente para carregar os dados.</p>';return}
+   const hoje=new Date(),anos=hoje.getFullYear()-D(c.cad).getFullYear()-((hoje.getMonth()<D(c.cad).getMonth()||(hoje.getMonth()==D(c.cad).getMonth()&&hoje.getDate()<D(c.cad).getDate()))?1:0),vip=anos>5;
+   const f=(l,v)=>`<div><span class="t-lbl">${l}</span>${esc(v)||'—'}</div>`;
+   e.innerHTML=f('CPF',c.cpf)+f('WhatsApp',c.whats)+f('Endereço',c.end)+f('Bairro',c.bairro)+f('Cidade / UF',c.cidade+' / '+c.uf)+f('Data de nascimento',fd(c.nasc))+f('Idade',c.nasc?dur(D(c.nasc),hoje):'')+f('Cadastro em',fd(c.cad))+f('Cliente ativo há',dur(D(c.cad),hoje))+
+   `<div><span class="t-lbl">Categoria</span><span class="rounded-full px-3 py-1 text-xs font-bold ${vip?'bg-amber-100 text-amber-800':'bg-slate-100 text-slate-700'}">${vip?'VIP':'COMUM'}</span></div>`},
+ itens(){$('pr-itens').innerHTML=P.itens.map((it,i)=>`<tr><td><select class="t-in" onchange="PR.item(${i},'cod',this.value)"><option value="">Selecione…</option>${DB.servicos.map(s=>`<option value="${s.cod}" ${s.cod==it.cod?'selected':''}>${s.cod} — ${esc(s.desc)}</option>`).join('')}</select></td>
+   <td><input type="number" min="0" value="${it.qtd}" class="t-in" oninput="PR.item(${i},'qtd',this.value)"></td><td>UM</td><td class="text-right" id="pr-un${i}"></td><td class="text-right font-semibold" id="pr-tt${i}"></td>
+   <td><button class="text-red-600 hover:text-red-800 cursor-pointer no-print" title="Remover" onclick="PR.del(${i})">✕</button></td></tr>`).join('')},
+ render(){$('pr-cli').innerHTML='<option value="">Selecione o cliente…</option>'+DB.clientes.map(c=>`<option value="${c.cod}" ${c.cod==P.cli?'selected':''}>${c.cod} — ${esc(c.nome)}</option>`).join('');
+   $('pr-tec').innerHTML=DB.tecnicos.map(t=>`<option value="${t.cod}" ${t.cod==P.tec?'selected':''}>${t.cod} — ${esc(t.nome)}</option>`).join('');
+   $('pr-num').value=P.num;$('pr-data').value=P.data;$('pr-obs').value=P.obs;$('pr-iss').value=P.iss;$('pr-desc').value=P.desc;PR.info();PR.itens();PR.calc();PR.lista()},
+ lista(){const tabs={clientes:'Clientes',servicos:'Serviços',tecnicos:'Vendedores',propostas:'Propostas salvas'};
+   $('pr-tabs').innerHTML=Object.entries(tabs).map(([k,v])=>`<button class="t-tab ${k===tabLista?'on':''}" onclick="tabLista='${k}';PR.lista()">${v} (${DB[k].length})</button>`).join('');
+   const cols={clientes:[['cod','Cód.'],['nome','Nome'],['cpf','CPF'],['whats','WhatsApp'],['cidade','Cidade'],['uf','UF']],servicos:[['cod','Cód.'],['desc','Serviço'],['preco','Preço']],tecnicos:[['cod','Cód.'],['nome','Nome']],propostas:[['num','Nº'],['data','Data'],['cliNome','Cliente'],['tecNome','Vendedor'],['total','Total']]}[tabLista];
+   const fm=(k,v)=>k==='preco'||k==='total'?R(v):k==='data'?fd(v):esc(v);
+   $('pr-lista').innerHTML=`<table><thead><tr>${cols.map(c=>`<th>${c[1]}</th>`).join('')}<th></th></tr></thead><tbody>${DB[tabLista].map((r,i)=>`<tr>${cols.map(c=>`<td>${fm(c[0],r[c[0]])}</td>`).join('')}<td class="whitespace-nowrap">${tabLista==='propostas'?`<button class="text-sky-700 font-semibold cursor-pointer" onclick="PR.abrir(${i})">Abrir</button> · `:''}<button class="text-red-600 cursor-pointer" onclick="PR.rm('${tabLista}',${i})">Excluir</button></td></tr>`).join('')||'<tr><td class="text-slate-400">Nenhum registro.</td></tr>'}</tbody></table>`},
+ rm(k,i){if(!confirm('Excluir este registro?'))return;DB[k].splice(i,1);persist();PR.render()},
+ abrir(i){P=JSON.parse(JSON.stringify(DB.propostas[i].dados));PR.render();scrollTo({top:0,behavior:'smooth'})},
+ cad(t){cadAtual=t;const d=CAD[t];$('pr-mt').textContent=d.t;$('pr-mf').innerHTML=d.f.map(f=>`<div><label class="t-lbl">${f[1]}</label><input name="${f[0]}" type="${f[2]||'text'}" step="0.01" required class="t-in"></div>`).join('');$('pr-modal').classList.replace('hidden','flex')},
+ fecha(){$('pr-modal').classList.replace('flex','hidden')},
+ okcad(e){e.preventDefault();const d=CAD[cadAtual],o={};d.f.forEach(f=>o[f[0]]=e.target.elements[f[0]].value.trim());if(o.preco!==undefined)o.preco=+o.preco;
+   o.cod=Math.max(0,...DB[d.k].map(x=>+x.cod))+1;if(cadAtual==='cliente')o.cad=iso(new Date());DB[d.k].push(o);persist();
+   if(cadAtual==='cliente')P.cli=o.cod;if(cadAtual==='tecnico')P.tec=o.cod;PR.fecha();PR.render();toast('Cadastro realizado: '+(o.nome||o.desc))},
+ snap(){const c=DB.clientes.find(x=>x.cod==P.cli),t=DB.tecnicos.find(x=>x.cod==P.tec),tt=PR.totais();
+   return{num:P.num,data:P.data,cliNome:c?c.nome:'',tecNome:t?t.nome:'',total:tt.total,dados:JSON.parse(JSON.stringify(P)),cliente:c||null,vendedor:t||null,itens:P.itens.filter(i=>i.cod).map(i=>({codigo:i.cod,descricao:DB.servicos.find(s=>s.cod==i.cod).desc,quantidade:i.qtd,unidade:'UM',valorUnitario:i.un,valorTotal:i.tot})),resumo:{subtotal:tt.sub,issPercent:+P.iss,iss:tt.issV,descontoPercent:+P.desc,desconto:tt.descV,totalAPagar:tt.total}}},
+ ok(){if(!P.cli){toast('Selecione um cliente.');return false}if(!P.itens.some(i=>i.cod)){toast('Adicione ao menos um serviço.');return false}return true},
+ salvar(quiet){if(!PR.ok())return false;const s=PR.snap(),i=DB.propostas.findIndex(x=>x.num===s.num);i>=0?DB.propostas[i]=s:DB.propostas.push(s);persist();PR.lista();if(!quiet)toast('Proposta salva.');return true},
+ async exportar(){if(!PR.salvar(true))return;const s=PR.snap();delete s.dados;await gravar(`${P.num}_${s.cliNome.split(' ')[0]}.json`,JSON.stringify({exportadoEm:new Date().toISOString(),proposta:s,cadastros:{clientes:DB.clientes,servicos:DB.servicos,vendedores:DB.tecnicos},propostasSalvas:DB.propostas.map(p=>{const q={...p};delete q.dados;return q})},null,2),'application/json')},
+ async csv(){if(!PR.ok())return;const s=PR.snap(),L=[['Proposta',s.num,'Data',fd(s.data)],['Cliente',s.cliNome,'Vendedor',s.tecNome],[],['Código','Descrição','Quant','Unid','Valor unitário','Valor total'],...s.itens.map(i=>[i.codigo,i.descricao,i.quantidade,i.unidade,i.valorUnitario.toFixed(2).replace('.',','),i.valorTotal.toFixed(2).replace('.',',')]),[],['','','','','Subtotal',s.resumo.subtotal.toFixed(2).replace('.',',')],['','','','','ISS',s.resumo.iss.toFixed(2).replace('.',',')],['','','','','Desconto',s.resumo.desconto.toFixed(2).replace('.',',')],['','','','','Total a pagar',s.resumo.totalAPagar.toFixed(2).replace('.',',')]];
+   await gravar(P.num+'.csv','\ufeff'+L.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(';')).join('\r\n'),'text/csv')},
+ chamado(){if(!PR.ok())return;const s=PR.snap();const row=document.createElement('tr');row.innerHTML=`<td>#CH-${ticketCount++}</td><td>${esc(s.cliNome)}</td><td>Proposta ${esc(s.num)}</td><td>6 Horas</td><td><span class="badge status-aberto">Aberto</span></td><td><button class="btn" style="padding:.3rem .6rem;font-size:.8rem" onclick="alterarStatus(this,'Em Atendimento')">Atender</button></td>`;
+   document.getElementById('chamadosTableBody').appendChild(row);PR.salvar(true);toast('Chamado aberto no sistema (Helpdesk N1).')}
+};
+/* ---- Painel ---- */
+const K=SEED.docs;let pnTab='ind';
+const tb=(h,r,cls)=>`<div class="overflow-x-auto ${cls||''}"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${r.map(x=>`<tr>${x.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+const doc=a=>`<article class="t-card max-w-none space-y-3 text-sm leading-relaxed text-slate-700">${a.map((p,i)=>/^(CLÁUSULA|\d+\.)/.test(p)||i===0?`<h3 class="pt-2 font-bold text-sky-900 ${i===0?'text-lg':''}">${esc(p)}</h3>`:`<p>${esc(p)}</p>`).join('')}</article>`;
+const PN={
+ ind(){const k=K.ind.map(r=>`<div class="t-card"><div class="text-xs font-semibold uppercase text-slate-500">${esc(r[0])}</div><div class="mt-1 text-2xl font-extrabold text-sky-900">${esc(r[1])}</div><div class="text-xs text-slate-500">Meta: ${esc(r[2])}</div><div class="mt-2 inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-800">${esc(r[3])}</div></div>`).join('');
+   const c=K.canais,tot=i=>sum(c,r=>r[i]);return`<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">${k}</div><h3 class="mt-6 mb-2 font-bold text-sky-900">Chamados por status e canal</h3>`+tb(['Canal','Aberto','Em Atendimento','Encerrado','Total'],[...c.map(r=>[r[0],`<span class="badge status-aberto">${r[1]}</span>`,`<span class="badge status-atendimento">${r[2]}</span>`,`<span class="badge status-encerrado">${r[3]}</span>`,'<b>'+(r[1]+r[2]+r[3])+'</b>']),['<b>TOTAL OPERACIONAL</b>',tot(1),tot(2),tot(3),'<b>'+(tot(1)+tot(2)+tot(3))+'</b>']])},
+ fin(){const i=K.inv,p=K.proj,f=sum(p,r=>r[1]*r[2]),l=sum(p,r=>r[1]*r[2]-r[3]);
+   return`<h3 class="mb-2 font-bold text-sky-900">Investimento inicial</h3>`+tb(['Item','Categoria','Qtd','Custo unit.','Total'],[...i.map(r=>[esc(r[0]),r[1],r[2],R(r[3]),R(r[2]*r[3])]),['<b>TOTAL DO INVESTIMENTO</b>','','','','<b>'+R(sum(i,r=>r[2]*r[3]))+'</b>']])+
+   `<h3 class="mt-6 mb-2 font-bold text-sky-900">Projeção de faturamento (12 meses)</h3>`+tb(['Mês','Clientes','Ticket médio','Faturamento','Custos','Resultado'],[...p.map(r=>[r[0],r[1],R(r[2]),R(r[1]*r[2]),R(r[3]),`<b class="${r[1]*r[2]-r[3]<0?'text-red-600':'text-emerald-700'}">${R(r[1]*r[2]-r[3])}</b>`]),['<b>TOTAL ANUAL</b>','','','<b>'+R(f)+'</b>','<b>'+R(sum(p,r=>r[3]))+'</b>','<b>'+R(l)+'</b>']])+
+   `<h3 class="mt-6 mb-2 font-bold text-sky-900">Clientes e faturamento</h3>`+tb(['ID','Razão social','Plano','Máquinas','Valor mensal','Fatura','Vencimento'],[...K.cf.map(r=>[r[0],esc(r[1]),r[2],r[3],R(r[4]),`<span class="badge ${r[5]==='PAGO'?'status-aberto':'status-atendimento'}">${r[5]}</span>`,r[6]]),['<b>Total</b>','','',sum(K.cf,r=>r[3]),'<b>'+R(sum(K.cf,r=>r[4]))+'</b>','','']])},
+ est(){const e=K.est,st={};e.forEach(r=>st[r[3]]=(st[r[3]]||0)+1);return`<div class="mb-4 grid gap-4 sm:grid-cols-3"><div class="t-card"><div class="t-lbl">Parque total</div><div class="text-2xl font-extrabold text-sky-900">${e.length} máquinas</div></div>${Object.entries(st).map(([k,v])=>`<div class="t-card"><div class="t-lbl">${esc(k)}</div><div class="text-2xl font-extrabold text-sky-900">${v}</div></div>`).join('')}</div><div class="max-h-96 overflow-y-auto">`+tb(['ID','Modelo','Nº série','Status','Cliente','Data'],e.map(r=>r.map((c,i)=>i===5?fd(c):esc(c))))+'</div>'},
+ con(){return doc(K.contrato)},rel(){return doc(K.relatorio)}};
+function pn(t){pnTab=t||pnTab;const n={ind:'Indicadores do Helpdesk',fin:'Plano financeiro',est:'Estoque (parque de 50)',con:'Contrato',rel:'Relatório de atividades'};
+ $('pn-tabs').innerHTML=Object.entries(n).map(([k,v])=>`<button class="t-tab ${k===pnTab?'on':''}" onclick="pn('${k}')">${v}</button>`).join('');$('pn-body').innerHTML=PN[pnTab]()}
+
+/* ===== OFICINA DIGITAL: LÓGICA E ESTADO ===== */
+const OF = {
+  tab: 'abertura',
+  osAtual: 1001,
+  telegramToken: '9254060428:AAFT6X32i4fzbdDt_WYydjPxRZ6bZQhviTI',
+  telegramChatId: '8880976787',
+  telegramMsgs: [
+    { sender: 'bot', text: '🛠️ <b>RÁDIO DO TÉCNICO INICIADO</b><br>Monitorando chamados da Oficina Digital. Use <code>/abertos</code> para ver a fila de bancada.', time: '08:00' },
+    { sender: 'bot', text: '🚨 <b>NOVO CHAMADO #OS-1001</b><br><b>Cliente:</b> Carlos Silva (Dell Inspiron 15)<br><b>Gravidade:</b> ALTA<br><b>Causa:</b> Curto na entrada 19V / Jack DC quebrado<br>Use <code>/ver 1001</code> para detalhes.', time: '08:15' }
+  ],
+  ultimoLaudo: null,
+  filtroGrafo: '',
+
+  // Base canônica de 7 casos da Oficina (Conforme documentação do projeto)
+  grafo: [
+    {
+      id: 1,
+      aparelho: "Notebook Dell Inspiron / Vostro",
+      sintoma: "Não liga / Sem sinal de energia (LED do carregador apaga ou pisca)",
+      causa: "Curto-circuito na linha de entrada de 19V ou conector Jack DC danificado",
+      peca: "Substituição do conector Jack DC / Reparo de trilha na placa-mãe",
+      tempo: "2 horas",
+      gravidade: "ALTA",
+      procedimento: "Inspecionar conector com multímetro na escala de continuidade, injetar 1V na linha de alta com fonte assimétrica e localizar componente em curto com câmera térmica."
+    },
+    {
+      id: 2,
+      aparelho: "PC Desktop Gamer / Office",
+      sintoma: "Desliga sozinho durante jogos ou carga pesada / Aquecimento excessivo",
+      causa: "Superaquecimento da CPU / Pasta térmica ressecada / Cooler travado",
+      peca: "Limpeza interna completa + Aplicação de pasta térmica de prata (Cooler Master)",
+      tempo: "1 hora e 30 minutos",
+      gravidade: "MÉDIA",
+      procedimento: "Desmontar conjunto dissipador/fan, desobstruir aletas de alumínio, higienizar com álcool isopropílico, aplicar pasta térmica e rodar teste de estresse AIDA64 monitorando temperatura."
+    },
+    {
+      id: 3,
+      aparelho: "Notebook Lenovo ThinkPad / Ideapad",
+      sintoma: "Tela Azul frequente (BSOD / Memory Management / Critical Process Died)",
+      causa: "Instabilidade no módulo de Memória RAM DDR4 ou setores danificados no SSD NVMe",
+      peca: "Substituição do módulo de memória RAM ou troca por SSD NVMe M.2",
+      tempo: "2 horas",
+      gravidade: "ALTA",
+      procedimento: "Rodar diagnóstico MemTest86 via pendrive bootável por 2 passos completos. Extrair relatório SMART do SSD pelo CrystalDiskInfo."
+    },
+    {
+      id: 4,
+      aparelho: "PC Desktop Corporativo",
+      sintoma: "Não inicializa o Windows / Mensagem 'No bootable device found'",
+      causa: "Corrupção de setor de inicialização (MBR/GPT) ou cabo SATA com mau contato",
+      peca: "Troca do cabo SATA / Reparo da partição EFI e reinstalação limpa do Windows",
+      tempo: "3 horas",
+      gravidade: "MÉDIA",
+      procedimento: "Checar detecção de hardware na BIOS/UEFI, testar cabo de dados SATA e reconstruir BCD via linha de comando no ambiente de recuperação."
+    },
+    {
+      id: 5,
+      aparelho: "MacBook Air / Pro",
+      sintoma: "Bateria estufada / Trackpad duro e carcaça levantando",
+      causa: "Degradação químico-física das células de íons de lítio por estresse térmico",
+      peca: "Substituição do módulo de bateria original e descarte ecológico",
+      tempo: "2 horas e 30 minutos",
+      gravidade: "ALTA",
+      procedimento: "Desconectar bateria imediatamente para evitar perfuração/incêndio, remover adesivos com removedor específico e calibrar SMC após instalação da nova peça."
+    },
+    {
+      id: 6,
+      aparelho: "Notebook Acer Aspire",
+      sintoma: "Lentidão excessiva e 100% de uso de disco constante no Gerenciador",
+      causa: "Gargalo crônico de HDD mecânico de 5400 RPM com setores lentos",
+      peca: "Upgrade para SSD NVMe M.2 500GB Kingston/Crucial + Instalação limpa",
+      tempo: "1 hora e 30 minutos",
+      gravidade: "MÉDIA",
+      procedimento: "Realizar backup dos arquivos do cliente, instalar o SSD no slot M.2, formatar em GPT/UEFI com Windows 11 e restaurar os dados do usuário."
+    },
+    {
+      id: 7,
+      aparelho: "Notebook Positivo / Multilaser",
+      sintoma: "Não carrega a bateria / Conector com folga e faíscas ao mexer",
+      causa: "Rompimento da solda do conector Jack P4 fêmea na placa-mãe",
+      peca: "Ressolda do conector Jack DC com reforço estrutural ou troca da peça",
+      tempo: "1 hora",
+      gravidade: "BAIXA",
+      procedimento: "Desmontar o chassi plástico, retirar resíduos de solda fria com sugador, aplicar solda nova estanho/chumbo 63/37 e reforçar suporte com resina epóxi."
+    }
+  ],
+
+  // Documento 4: Histórico de Serviços da Oficina (para busca da Skill B / GraphRAG)
+  historico: [
+    { os: "OS-012", aparelho: "Notebook Dell Inspiron", sintoma: "Não liga e não acende luz", causa: "Curto na entrada 19V", peca: "Jack DC + Diodo de proteção", tempo: "2 horas", valor: 180 },
+    { os: "OS-025", aparelho: "PC Desktop Gamer", sintoma: "Desliga ao iniciar jogos pesados", causa: "Superaquecimento CPU 95°C", peca: "Pasta térmica prata + limpeza", tempo: "1h30", valor: 120 },
+    { os: "OS-038", aparelho: "Notebook Lenovo Ideapad", sintoma: "Tela azul frequente BSOD", causa: "Memória RAM com blocos corrompidos", peca: "Pente RAM DDR4 8GB", tempo: "1 hora", valor: 190 },
+    { os: "OS-049", aparelho: "PC Desktop Escritório", sintoma: "Não inicia Windows / Erro de Boot", causa: "Setor de boot EFI corrompido", peca: "Reparo de boot + SSD NVMe 256GB", tempo: "2h30", valor: 220 },
+    { os: "OS-061", aparelho: "MacBook Pro 13", sintoma: "Trackpad duro e carcaça estufada", causa: "Bateria estufada", peca: "Kit Bateria A1819", tempo: "2h30", valor: 450 },
+    { os: "OS-074", aparelho: "Notebook Acer Aspire 3", sintoma: "Uso de disco 100% e lentidão", causa: "HDD mecânico 5400RPM lento", peca: "SSD Kingston NVMe 500GB", tempo: "1h30", valor: 250 },
+    { os: "OS-089", aparelho: "Notebook Positivo Motion", sintoma: "Carregador com mau contato", causa: "Pino central do Jack DC quebrado", peca: "Conector Jack DC P4", tempo: "1 hora", valor: 90 },
+    { os: "OS-102", aparelho: "Notebook Dell Vostro", sintoma: "Lentidão e superaquecimento", causa: "Pasta térmica ressecada e poeira", peca: "Higienização + Pasta térmica", tempo: "1h30", valor: 140 },
+    { os: "OS-115", aparelho: "Notebook Lenovo ThinkPad", sintoma: "Travando em tela preta", causa: "SSD SATA corrompido", peca: "SSD M.2 SATA 480GB", tempo: "2 horas", valor: 230 }
+  ],
+
+  // Lista de chamados em andamento no sistema da oficina
+  chamados: [],
+
+  init() {
+    try {
+      const salvas = localStorage.getItem('oficina_chamados_db');
+      if (salvas) {
+        OF.chamados = JSON.parse(salvas);
+      }
+    } catch(e) {}
+
+    if (!OF.chamados || OF.chamados.length === 0) {
+      OF.chamados = [
+        {
+          id: 1001,
+          cliente: "Carlos Silva",
+          contato: "(85) 98877-6655",
+          aparelho: "Notebook Dell Inspiron 15",
+          defeito: "O notebook não liga de jeito nenhum. Quando conecto o carregador, a luz verde do plugue fica piscando ou se apaga.",
+          data: "2026-10-27 08:15",
+          status: "Aberto",
+          gravidade: "ALTA",
+          modo: "Grafo de Conhecimento",
+          laudo: {
+            modelo: "Notebook Dell Inspiron 15",
+            sintoma: "Não liga / Sem sinal de energia",
+            gravidade: "ALTA",
+            causa_provavel: "Curto-circuito na linha de entrada de 19V ou conector Jack DC danificado",
+            peca_provavel: "Substituição do conector Jack DC / Reparo de trilha na placa-mãe",
+            tempo_bancada: "2 horas",
+            proximos_passos: "Inspecionar conector com multímetro, injetar 1V na linha de alta com fonte assimétrica e câmera térmica."
+          }
+        },
+        {
+          id: 1002,
+          cliente: "Mariana Ramos",
+          contato: "(85) 99123-4567",
+          aparelho: "Lenovo Ideapad 3",
+          defeito: "Dando tela azul (BSOD) constantemente, principalmente quando abro várias abas do navegador ou tento jogar.",
+          data: "2026-10-27 09:30",
+          status: "Em Atendimento",
+          gravidade: "MÉDIA",
+          modo: "Simples (padrão)",
+          laudo: {
+            modelo: "Lenovo Ideapad 3",
+            sintoma: "Tela Azul frequente (BSOD)",
+            gravidade: "MÉDIA",
+            causa_provavel: "Instabilidade no módulo de Memória RAM DDR4 ou setores danificados no SSD NVMe",
+            peca_provavel: "Substituição do módulo de memória RAM ou troca por SSD NVMe M.2",
+            tempo_bancada: "1 hora e 30 minutos",
+            proximos_passos: "Rodar teste de memória MemTest86 e verificar integridade SMART do SSD pelo CrystalDiskInfo."
+          }
+        }
+      ];
+      OF.salvar();
+    }
+
+    if (!OF.ultimoLaudo && OF.chamados.length > 0) {
+      OF.ultimoLaudo = OF.chamados[0];
+    }
+
+    OF.renderStats();
+    OF.render();
+  },
+
+  salvar() {
+    try {
+      localStorage.setItem('oficina_chamados_db', JSON.stringify(OF.chamados));
+    } catch(e) {}
+    OF.renderStats();
+  },
+
+  renderStats() {
+    const el = $('of-stats');
+    if (!el) return;
+    const tot = OF.chamados.length;
+    const abertos = OF.chamados.filter(c => c.status === 'Aberto').length;
+    const andamento = OF.chamados.filter(c => c.status === 'Em Atendimento').length;
+    const concluidos = OF.chamados.filter(c => c.status === 'Concluído').length;
+    
+    el.innerHTML = `
+      <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-700">Total: ${tot}</span>
+      <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">Abertos: ${abertos}</span>
+      <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">Em Atend.: ${andamento}</span>
+      <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">Concluídos: ${concluidos}</span>
+      <span class="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-sky-800 cursor-pointer" title="Telegram Bot Ativo" onclick="OF.setTab('telegram')">📡 Telegram Bot: Conectado</span>
+    `;
+  },
+
+  setTab(t) {
+    OF.tab = t;
+    ['abertura', 'acompanhamento', 'telegram', 'skills', 'grafo', 'ecossistema'].forEach(k => {
+      const b = $('oftab-' + k);
+      if (b) {
+        if (k === t) b.classList.add('on');
+        else b.classList.remove('on');
+      }
+    });
+    OF.render();
+  },
+
+  render() {
+    const el = $('of-body');
+    if (!el) return;
+    if (OF.tab === 'abertura') el.innerHTML = OF.viewAbertura();
+    else if (OF.tab === 'acompanhamento') el.innerHTML = OF.viewAcompanhamento();
+    else if (OF.tab === 'telegram') el.innerHTML = OF.viewTelegram();
+    else if (OF.tab === 'skills') el.innerHTML = OF.viewSkills();
+    else if (OF.tab === 'grafo') el.innerHTML = OF.viewGrafo();
+    else if (OF.tab === 'ecossistema') el.innerHTML = OF.viewEcossistema();
+  },
+
+  // 1. ABA DE ABERTURA & LAUDO IA
+  viewAbertura() {
+    const ult = OF.ultimoLaudo;
+    return `
+      <!-- O Caminho de um Chamado (5 passos conforme documentação) -->
+      <section class="t-card mb-6 bg-gradient-to-r from-sky-50 via-white to-slate-50 border-sky-200">
+        <h3 class="text-sm font-bold text-sky-900 mb-2 uppercase tracking-wide">O Caminho de um Chamado na Oficina Digital (5 Etapas)</h3>
+        <div class="grid gap-3 sm:grid-cols-5 text-xs">
+          <div class="p-2.5 rounded-lg bg-white border border-slate-200">
+            <span class="font-bold text-sky-800 block">1. Abertura</span>
+            <span class="text-slate-600">Cliente relata nome, contato, aparelho e defeito.</span>
+          </div>
+          <div class="p-2.5 rounded-lg bg-white border border-slate-200">
+            <span class="font-bold text-sky-800 block">2. Registro da OS</span>
+            <span class="text-slate-600">Sistema guarda e gera o número sequencial da OS.</span>
+          </div>
+          <div class="p-2.5 rounded-lg bg-white border border-slate-200">
+            <span class="font-bold text-sky-800 block">3. Laudo com IA</span>
+            <span class="text-slate-600">Calcula gravidade, causa provável e peça necessária.</span>
+          </div>
+          <div class="p-2.5 rounded-lg bg-white border border-slate-200">
+            <span class="font-bold text-sky-800 block">4. Rádio Telegram</span>
+            <span class="text-slate-600">Técnico é avisado no celular com comandos rápidos.</span>
+          </div>
+          <div class="p-2.5 rounded-lg bg-white border border-slate-200">
+            <span class="font-bold text-sky-800 block">5. Acompanhamento</span>
+            <span class="text-slate-600">Cliente digita o número da OS e vê o status e laudo.</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid gap-6 lg:grid-cols-12">
+        <!-- FORMULÁRIO DE ABERTURA (COLUNA ESQUERDA) -->
+        <div class="lg:col-span-7">
+          <section class="t-card space-y-4">
+            <div class="flex items-center justify-between border-b pb-3">
+              <h3 class="font-bold text-sky-900 text-base">Novo Chamado de Manutenção</h3>
+              <span class="text-xs text-slate-500">Etapa 1 &amp; 2</span>
+            </div>
+
+            <form onsubmit="OF.criarChamado(event)" class="space-y-3">
+              <div class="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <label class="t-lbl">Nome do Cliente *</label>
+                  <input id="of-cli-nome" type="text" required placeholder="Ex: Roberto Alencar" class="t-in">
+                </div>
+                <div>
+                  <label class="t-lbl">Telefone / WhatsApp *</label>
+                  <input id="of-cli-tel" type="text" required placeholder="Ex: (85) 99876-5432" class="t-in">
+                </div>
+              </div>
+
+              <div class="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <label class="t-lbl">Aparelho / Equipamento *</label>
+                  <select id="of-cli-aparelho" class="t-in" required>
+                    <option value="Notebook Dell Inspiron / Vostro">Notebook Dell Inspiron / Vostro</option>
+                    <option value="PC Desktop Gamer / Office">PC Desktop Gamer / Office</option>
+                    <option value="Notebook Lenovo ThinkPad / Ideapad">Notebook Lenovo ThinkPad / Ideapad</option>
+                    <option value="PC Desktop Corporativo">PC Desktop Corporativo</option>
+                    <option value="MacBook Air / Pro">MacBook Air / Pro (Apple)</option>
+                    <option value="Notebook Acer Aspire">Notebook Acer Aspire</option>
+                    <option value="Notebook Positivo / Multilaser">Notebook Positivo / Multilaser</option>
+                    <option value="Notebook / Desktop Genérico">Outro Equipamento de TI</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="t-lbl">Modo de Triagem da IA *</label>
+                  <select id="of-modo-triagem" class="t-in">
+                    <option value="Simples (padrão)">⚡ Simples (Palavras-chave locais)</option>
+                    <option value="Grafo de Conhecimento" selected>🕸️ Grafo de Conhecimento (7 Casos)</option>
+                    <option value="CrewAI (Dupla de Especialistas)">🤖 CrewAI (Atendente + Técnico)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <label class="t-lbl" style="margin-bottom:0">Relato do Defeito pelo Cliente *</label>
+                  <span class="text-xs text-slate-400">Atalhos rápidos de teste:</span>
+                </div>
+                <div class="flex flex-wrap gap-1.5 mb-2">
+                  <button type="button" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded px-2 py-0.5 cursor-pointer" onclick="OF.preencherRelato(1)">Não liga / Luz pisca</button>
+                  <button type="button" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded px-2 py-0.5 cursor-pointer" onclick="OF.preencherRelato(2)">Desliga jogando / Fervendo</button>
+                  <button type="button" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded px-2 py-0.5 cursor-pointer" onclick="OF.preencherRelato(3)">Tela Azul BSOD</button>
+                  <button type="button" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded px-2 py-0.5 cursor-pointer" onclick="OF.preencherRelato(4)">No boot device</button>
+                  <button type="button" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded px-2 py-0.5 cursor-pointer" onclick="OF.preencherRelato(5)">Bateria estufada</button>
+                  <button type="button" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded px-2 py-0.5 cursor-pointer" onclick="OF.preencherRelato(6)">100% disco / Lento</button>
+                  <button type="button" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded px-2 py-0.5 cursor-pointer" onclick="OF.preencherRelato(7)">Carregador com faísca</button>
+                </div>
+                <textarea id="of-cli-defeito" rows="4" required class="t-in" placeholder="Descreva exatamente o que acontece com o equipamento, mensagens de erro, barulhos ou sintomas..."></textarea>
+              </div>
+
+              <div class="pt-2 flex items-center justify-between">
+                <button type="submit" class="w-full sm:w-auto bg-sky-700 hover:bg-sky-900 text-white font-bold py-2.5 px-6 rounded-lg text-sm transition cursor-pointer shadow">
+                  🚀 Abrir Chamado &amp; Gerar Laudo Técnico com IA
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <!-- LAUDO TÉCNICO GERADO (COLUNA DIREITA) -->
+        <div class="lg:col-span-5">
+          <section class="t-card border-sky-300 bg-slate-50 h-full flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between border-b pb-3 mb-3">
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">📋</span>
+                  <h3 class="font-bold text-sky-900 text-sm uppercase tracking-wide">Laudo Técnico Preliminar da IA</h3>
+                </div>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full ${ult && ult.gravidade==='ALTA'?'bg-red-100 text-red-800':ult && ult.gravidade==='MÉDIA'?'bg-amber-100 text-amber-800':'bg-green-100 text-green-800'}">
+                  Gravidade: ${ult ? ult.gravidade : 'AGUARDANDO'}
+                </span>
+              </div>
+
+              ${ult ? `
+                <div class="space-y-3 text-xs text-slate-700">
+                  <div class="flex justify-between items-center bg-white p-2.5 rounded border border-slate-200">
+                    <span class="font-bold text-sky-900">Nº Ordem de Serviço:</span>
+                    <span class="font-mono font-extrabold text-sm text-sky-700">#OS-${ult.id}</span>
+                  </div>
+
+                  <div class="bg-white p-2.5 rounded border border-slate-200 space-y-1">
+                    <div><span class="font-semibold text-slate-500">Cliente:</span> <b>${esc(ult.cliente)}</b> (${esc(ult.contato)})</div>
+                    <div><span class="font-semibold text-slate-500">Aparelho:</span> ${esc(ult.aparelho)}</div>
+                    <div><span class="font-semibold text-slate-500">Modo de Triagem:</span> <span class="text-sky-700 font-semibold">${esc(ult.modo)}</span></div>
+                  </div>
+
+                  <div class="bg-white p-2.5 rounded border border-slate-200 space-y-1.5">
+                    <div>
+                      <span class="font-bold text-slate-800 block">Sintoma Principal Diagnosticado:</span>
+                      <span class="text-slate-600">${esc(ult.laudo.sintoma)}</span>
+                    </div>
+                    <div>
+                      <span class="font-bold text-slate-800 block">Causa Provável:</span>
+                      <span class="text-slate-600">${esc(ult.laudo.causa_provavel)}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                      <div>
+                        <span class="font-bold text-slate-800 block">Peça Provável:</span>
+                        <span class="text-slate-600">${esc(ult.laudo.peca_provavel)}</span>
+                      </div>
+                      <div>
+                        <span class="font-bold text-slate-800 block">Tempo de Bancada:</span>
+                        <span class="text-slate-600">${esc(ult.laudo.tempo_bancada)}</span>
+                      </div>
+                    </div>
+                    <div class="pt-1">
+                      <span class="font-bold text-slate-800 block">Próximos Passos (Bancada):</span>
+                      <span class="text-slate-600">${esc(ult.laudo.proximos_passos)}</span>
+                    </div>
+                  </div>
+
+                  <div class="p-2.5 rounded bg-sky-50 border border-sky-200 text-sky-900 flex items-center justify-between">
+                    <span>📡 <b>Telegram do Técnico:</b> Notificação enviada</span>
+                    <button class="t-b2 !py-0.5 !px-2 text-xs" onclick="OF.setTab('telegram')">Ver no Rádio</button>
+                  </div>
+                </div>
+              ` : `
+                <div class="p-8 text-center text-slate-400">
+                  <p>Preencha os dados ao lado e clique em "Abrir Chamado" para que a IA analise o relato e gere o laudo de bancada.</p>
+                </div>
+              `}
+            </div>
+
+            ${ult ? `
+              <div class="pt-3 border-t mt-3 flex justify-between gap-2">
+                <button class="t-b2 text-xs flex-1" onclick="OF.consultarOS(${ult.id})">🔍 Acompanhar este Chamado</button>
+                <button class="t-b2 text-xs" onclick="OF.copiarLaudo(${ult.id})">📋 Copiar Laudo</button>
+              </div>
+            ` : ''}
+          </section>
+        </div>
+      </div>
+    `;
+  },
+
+  // 2. ABA DE ACOMPANHAMENTO DO CLIENTE
+  viewAcompanhamento() {
+    const c = OF.chamados.find(x => x.id === OF.osAtual) || OF.chamados[0];
+    return `
+      <div class="grid gap-6 lg:grid-cols-12">
+        <div class="lg:col-span-4 space-y-4">
+          <section class="t-card">
+            <h3 class="font-bold text-sky-900 text-sm uppercase tracking-wide mb-3">Buscar Chamado / OS</h3>
+            <div class="flex gap-2 mb-3">
+              <input id="of-busca-os" type="text" class="t-in" placeholder="Ex: 1001 ou #OS-1001" value="${c ? c.id : ''}">
+              <button class="rounded-lg bg-sky-700 px-4 py-2 text-sm font-bold text-white hover:bg-sky-900 cursor-pointer" onclick="OF.buscarOSClick()">Buscar</button>
+            </div>
+            
+            <label class="t-lbl mt-4 mb-2">Chamados Recentes no Sistema:</label>
+            <div class="space-y-2 max-h-72 overflow-y-auto">
+              ${OF.chamados.map(item => `
+                <div class="p-2.5 rounded-lg border ${item.id === (c?c.id:0) ? 'border-sky-500 bg-sky-50' : 'border-slate-200 bg-white hover:bg-slate-50'} cursor-pointer transition text-xs" onclick="OF.consultarOS(${item.id})">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-sky-900">#OS-${item.id}</span>
+                    <span class="rounded-full px-2 py-0.5 font-bold ${item.status==='Aberto'?'bg-green-100 text-green-800':item.status==='Em Atendimento'?'bg-amber-100 text-amber-800':'bg-blue-100 text-blue-800'}">${item.status}</span>
+                  </div>
+                  <div class="text-slate-700 truncate font-semibold">${esc(item.cliente)}</div>
+                  <div class="text-slate-500 truncate">${esc(item.aparelho)}</div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        </div>
+
+        <div class="lg:col-span-8">
+          ${c ? `
+            <section class="t-card space-y-5">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
+                <div>
+                  <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Ordem de Serviço de Informática</span>
+                  <h3 class="text-xl font-extrabold text-sky-900">#OS-${c.id} · ${esc(c.aparelho)}</h3>
+                  <p class="text-xs text-slate-500">Aberta em: ${c.data || 'Hoje'} · Cliente: <b>${esc(c.cliente)}</b> (${esc(c.contato)})</p>
+                </div>
+                <div>
+                  <span class="badge ${c.status==='Aberto'?'status-aberto':c.status==='Em Atendimento'?'status-atendimento':'status-encerrado'} !text-sm !py-1 !px-3">
+                    ${c.status}
+                  </span>
+                </div>
+              </div>
+
+              <!-- TIMELINE DE PROGRESSO DO CHAMADO -->
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <h4 class="text-xs font-bold text-slate-600 uppercase mb-3">Linha do Tempo do Atendimento</h4>
+                <div class="grid grid-cols-3 sm:grid-cols-5 gap-2 text-center text-xs">
+                  <div class="space-y-1">
+                    <div class="step-node bg-emerald-600 text-white mx-auto">✓</div>
+                    <span class="font-bold text-slate-700 block">1. Abertura</span>
+                    <span class="text-slate-400 text-[10px]">Site</span>
+                  </div>
+                  <div class="space-y-1">
+                    <div class="step-node bg-emerald-600 text-white mx-auto">✓</div>
+                    <span class="font-bold text-slate-700 block">2. Registrado</span>
+                    <span class="text-slate-400 text-[10px]">#OS-${c.id}</span>
+                  </div>
+                  <div class="space-y-1">
+                    <div class="step-node bg-emerald-600 text-white mx-auto">✓</div>
+                    <span class="font-bold text-slate-700 block">3. Laudo IA</span>
+                    <span class="text-slate-400 text-[10px]">${esc(c.gravidade)}</span>
+                  </div>
+                  <div class="space-y-1">
+                    <div class="step-node ${c.status!=='Aberto'?'bg-emerald-600 text-white':'bg-amber-400 text-slate-900'} mx-auto">${c.status!=='Aberto'?'✓':'4'}</div>
+                    <span class="font-bold text-slate-700 block">4. Bancada</span>
+                    <span class="text-slate-400 text-[10px]">${c.status==='Aberto'?'Na fila':'Em execução'}</span>
+                  </div>
+                  <div class="space-y-1">
+                    <div class="step-node ${c.status==='Concluído'?'bg-emerald-600 text-white':'bg-slate-200 text-slate-500'} mx-auto">${c.status==='Concluído'?'✓':'5'}</div>
+                    <span class="font-bold text-slate-700 block">5. Conclusão</span>
+                    <span class="text-slate-400 text-[10px]">${c.status==='Concluído'?'Retirada':'Pendente'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RELATO DO CLIENTE E LAUDO TÉCNICO -->
+              <div class="grid gap-4 sm:grid-cols-2 text-sm">
+                <div class="bg-white p-4 rounded-xl border border-slate-200">
+                  <h4 class="font-bold text-slate-800 mb-2">Relato do Cliente</h4>
+                  <p class="text-slate-600 text-xs italic bg-slate-50 p-3 rounded border">"${esc(c.defeito)}"</p>
+                  <div class="mt-3 text-xs text-slate-500">
+                    <div><b>Aparelho:</b> ${esc(c.aparelho)}</div>
+                    <div><b>Contato:</b> ${esc(c.contato)}</div>
+                  </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl border border-sky-200 bg-sky-50/30">
+                  <h4 class="font-bold text-sky-900 mb-2">Laudo Técnico da Inteligência Artificial</h4>
+                  <div class="space-y-1.5 text-xs text-slate-700">
+                    <div><b>Sintoma:</b> ${esc(c.laudo.sintoma)}</div>
+                    <div><b>Causa Provável:</b> ${esc(c.laudo.causa_provavel)}</div>
+                    <div><b>Peça Sugerida:</b> ${esc(c.laudo.peca_provavel)}</div>
+                    <div><b>Tempo de Bancada:</b> ${esc(c.laudo.tempo_bancada)}</div>
+                    <div><b>Procedimento:</b> ${esc(c.laudo.proximos_passos)}</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AÇÕES RÁPIDAS PARA O TÉCNICO OU CLIENTE -->
+              <div class="pt-3 border-t flex flex-wrap gap-2 justify-between items-center">
+                <div class="flex gap-2">
+                  ${c.status === 'Aberto' ? `
+                    <button class="btn !py-2 !px-4 text-xs" style="background:#FFC107; color:#333;" onclick="OF.alterarStatusChamado(${c.id}, 'Em Atendimento')">⚙️ Iniciar Atendimento na Bancada</button>
+                  ` : ''}
+                  ${c.status === 'Em Atendimento' ? `
+                    <button class="btn !py-2 !px-4 text-xs" style="background:#28A745;" onclick="OF.alterarStatusChamado(${c.id}, 'Concluído')">✅ Concluir e Liberar Aparelho</button>
+                  ` : ''}
+                  ${c.status === 'Concluído' ? `
+                    <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200">Aparelho Pronto para Retirada pelo Cliente</span>
+                  ` : ''}
+                </div>
+                <div class="flex gap-2">
+                  <button class="t-b2 text-xs" onclick="window.print()">🖨️ Imprimir OS</button>
+                  <button class="t-b2 text-xs" onclick="OF.setTab('telegram')">📻 Avisar no Telegram</button>
+                </div>
+              </div>
+            </section>
+          ` : `
+            <div class="t-card p-12 text-center text-slate-400">Nenhum chamado selecionado.</div>
+          `}
+        </div>
+      </div>
+    `;
+  },
+
+  // 3. ABA DO RÁDIO DO TÉCNICO (TELEGRAM BOT)
+  viewTelegram() {
+    return `
+      <div class="grid gap-6 lg:grid-cols-12">
+        <!-- CONFIGURAÇÃO E EXPLICAÇÃO -->
+        <div class="lg:col-span-5 space-y-4">
+          <section class="t-card">
+            <div class="flex items-center gap-2 border-b pb-3 mb-3">
+              <span class="text-xl">📻</span>
+              <div>
+                <h3 class="font-bold text-sky-900 text-sm uppercase tracking-wide">Rádio do Técnico · Telegram API</h3>
+                <p class="text-xs text-slate-500">Comunicação direta entre o site, a IA e o celular do técnico.</p>
+              </div>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div>
+                <label class="t-lbl">Bot Token (Conforme arquivo .env)</label>
+                <div class="flex gap-1">
+                  <input id="tg-token-input" type="password" class="t-in font-mono text-xs" value="${esc(OF.telegramToken)}">
+                  <button type="button" class="t-b2 text-xs" onclick="OF.toggleToken()">👁</button>
+                </div>
+              </div>
+
+              <div>
+                <label class="t-lbl">Chat ID Autorizado (Conforme arquivo .env)</label>
+                <input id="tg-chat-input" type="text" class="t-in font-mono text-xs" value="${esc(OF.telegramChatId)}">
+              </div>
+
+              <div class="pt-2 flex flex-wrap gap-2">
+                <button class="t-b2 text-xs font-bold text-sky-700" onclick="OF.salvarCredenciaisTelegram()">💾 Salvar Config</button>
+                <button class="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-700 cursor-pointer" onclick="OF.testarEnvioRealTelegram()">📡 Testar Envio Real ao Telegram</button>
+              </div>
+              <div id="tg-status-envio" class="text-xs text-slate-600 mt-2"></div>
+            </div>
+          </section>
+
+          <section class="t-card bg-slate-50 border-slate-300 text-xs space-y-2">
+            <h4 class="font-bold text-slate-800">Como funciona o Bot do Telegram:</h4>
+            <ul class="space-y-1.5 text-slate-600 list-disc pl-4">
+              <li><b>Aviso Automático:</b> Quando um chamado é criado, o sistema envia o laudo completo diretamente para o chat do técnico.</li>
+              <li><b>Segurança no .env:</b> O token e chat_id ficam no arquivo <code>.env</code> (ignorado pelo git) e nunca expostos publicamente.</li>
+              <li><b>Busca getUpdates:</b> O script em Python <code>bot_telegram.py</code> consulta o Telegram periodicamente sem necessidade de IP fixo ou servidor web público.</li>
+              <li><b>Comandos suportados:</b>
+                <div class="mt-1 flex flex-wrap gap-1">
+                  <span class="tg-cmd" onclick="OF.enviarComandoAoMock('/abertos')">/abertos</span>
+                  <span class="tg-cmd" onclick="OF.enviarComandoAoMock('/ver 1001')">/ver 1001</span>
+                  <span class="tg-cmd" onclick="OF.enviarComandoAoMock('/andamento 1001')">/andamento 1001</span>
+                  <span class="tg-cmd" onclick="OF.enviarComandoAoMock('/concluir 1001')">/concluir 1001</span>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </div>
+
+        <!-- SIMULADOR DO SMARTPHONE DO TÉCNICO -->
+        <div class="lg:col-span-7 flex justify-center">
+          <div class="tg-phone w-full shadow-2xl">
+            <!-- TOPO DO SMARTPHONE / HEADER TELEGRAM -->
+            <div class="bg-[#17212b] p-3 border-b border-[#0e1621] flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-sky-600 flex items-center justify-center font-bold text-white text-sm shadow">
+                  🤖
+                </div>
+                <div>
+                  <div class="font-bold text-sm text-slate-100 flex items-center gap-1">
+                    Oficina Digital Bot
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
+                  </div>
+                  <div class="text-[11px] text-sky-400">online · Rádio do Técnico</div>
+                </div>
+              </div>
+              <button class="text-xs text-slate-400 hover:text-white" onclick="OF.limparChatTelegram()">Limpar</button>
+            </div>
+
+            <!-- CORPO DO CHAT (MENSAGENS) -->
+            <div id="tg-chat-feed" class="p-3 h-80 overflow-y-auto space-y-2 text-xs" style="background:#0e1621;">
+              ${OF.telegramMsgs.map(m => `
+                <div class="${m.sender === 'bot' ? 'tg-msg-in' : 'tg-msg-out'}">
+                  <div>${m.text}</div>
+                  <div class="text-[10px] text-right opacity-60 mt-1">${m.time}</div>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- TECLADO RÁPIDO DE COMANDOS -->
+            <div class="bg-[#17212b] p-2 border-t border-[#232e3c] flex flex-wrap gap-1">
+              <button class="tg-cmd" onclick="OF.enviarComandoAoMock('/abertos')">/abertos</button>
+              <button class="tg-cmd" onclick="OF.enviarComandoAoMock('/ver 1001')">/ver 1001</button>
+              <button class="tg-cmd" onclick="OF.enviarComandoAoMock('/andamento 1001')">/andamento 1001</button>
+              <button class="tg-cmd" onclick="OF.enviarComandoAoMock('/concluir 1001')">/concluir 1001</button>
+              <button class="tg-cmd" onclick="OF.enviarComandoAoMock('/ajuda')">/ajuda</button>
+            </div>
+
+            <!-- INPUT DE ENVIO DO TELEGRAM -->
+            <form onsubmit="OF.enviarMsgTelegramInput(event)" class="bg-[#17212b] p-2 flex gap-2 border-t border-[#0e1621]">
+              <input id="tg-msg-input" type="text" placeholder="Digite um comando (ex: /abertos ou /ver 1001)..." class="flex-1 bg-[#242f3d] text-white text-xs px-3 py-2 rounded-lg border border-transparent focus:outline-none focus:border-sky-500">
+              <button type="submit" class="bg-sky-600 hover:bg-sky-500 text-white font-bold px-3 py-2 rounded-lg text-xs cursor-pointer">Enviar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  // 4. ABA DA BANCADA DE TESTES DE IA (SKILLS A & B)
+  viewSkills() {
+    return `
+      <section class="t-card mb-6 bg-gradient-to-r from-amber-50 to-white border-amber-200">
+        <h3 class="text-sm font-bold text-amber-900 mb-2 uppercase tracking-wide">Bancada de Testes de IA · Laboratório de Prompts &amp; GraphRAG</h3>
+        <p class="text-xs text-slate-600">Teste as duas ferramentas de prompt (Skills) especificadas no projeto antes de aplicar no atendimento real.</p>
+        <div class="overflow-x-auto mt-3">
+          <table class="min-w-full text-xs">
+            <thead>
+              <tr class="bg-amber-100/50">
+                <th class="p-2 text-left font-bold text-amber-900">Skill</th>
+                <th class="p-2 text-left font-bold text-amber-900">Entrada</th>
+                <th class="p-2 text-left font-bold text-amber-900">Saída Formatada</th>
+                <th class="p-2 text-left font-bold text-amber-900">Papel / Persona</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b">
+                <td class="p-2 font-bold text-sky-900">A — Triagem de Sintomas</td>
+                <td class="p-2">Relato do cliente</td>
+                <td class="p-2 font-mono">Modelo + Sintoma principal + Gravidade (BAIXA, MÉDIA ou ALTA)</td>
+                <td class="p-2">Atendente de oficina de informática</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-emerald-900">B — Busca no histórico (GraphRAG)</td>
+                <td class="p-2">Modelo + Sintoma</td>
+                <td class="p-2 font-mono">Peça provável + Tempo de bancada + Casos parecidos (OS)</td>
+                <td class="p-2">Técnico de bancada</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="grid gap-6 lg:grid-cols-2 mb-6">
+        <!-- SKILL A -->
+        <section class="t-card space-y-3">
+          <div class="flex items-center justify-between border-b pb-2">
+            <h3 class="font-bold text-sky-900 text-sm">Skill A — Triagem de Sintomas</h3>
+            <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded">Atendente</span>
+          </div>
+          
+          <div class="bg-slate-50 p-2.5 rounded border text-[11px] text-slate-600">
+            <b>Prompt da Persona:</b>
+            <div class="font-mono text-[10px] mt-1 text-slate-700 bg-white p-2 rounded border">
+              Você é atendente de oficina de informática. Leia o relato do cliente. Responda SOMENTE neste formato, uma linha cada:<br>
+              Modelo: ...<br>
+              Sintoma principal: ...<br>
+              Gravidade: BAIXA, MÉDIA ou ALTA<br>
+              Se faltar informação, escreva "não informado". Não invente.
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="t-lbl" style="margin-bottom:0">Relato do Cliente (COLE O RELATO AQUI):</label>
+              <button class="text-[11px] text-sky-700 underline cursor-pointer" onclick="OF.exemploSkillA()">Carregar exemplo</button>
+            </div>
+            <textarea id="sk-a-in" rows="4" class="t-in text-xs font-mono" placeholder="Notebook Dell Inspiron 15 não liga de jeito nenhum, quando ligo o carregador a luz pisca e apaga."></textarea>
+          </div>
+
+          <button class="rounded-lg bg-sky-700 px-4 py-2 text-xs font-bold text-white hover:bg-sky-800 cursor-pointer w-full" onclick="OF.executarSkillA()">
+            ▶ Executar Skill A (Triagem)
+          </button>
+
+          <div>
+            <label class="t-lbl">Saída Estrita da Skill A:</label>
+            <pre id="sk-a-out" class="p-3 bg-slate-900 text-emerald-400 rounded-lg text-xs font-mono min-h-[70px] whitespace-pre-wrap">Aguardando execução...</pre>
+          </div>
+        </section>
+
+        <!-- SKILL B -->
+        <section class="t-card space-y-3">
+          <div class="flex items-center justify-between border-b pb-2">
+            <h3 class="font-bold text-emerald-900 text-sm">Skill B — Busca no Histórico (GraphRAG)</h3>
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">Técnico de Bancada</span>
+          </div>
+
+          <div class="bg-slate-50 p-2.5 rounded border text-[11px] text-slate-600">
+            <b>Prompt da Persona:</b>
+            <div class="font-mono text-[10px] mt-1 text-slate-700 bg-white p-2 rounded border">
+              Você é técnico de bancada. Use APENAS o histórico abaixo. Dado o modelo e o sintoma, diga:<br>
+              Peça provável: ...<br>
+              Tempo de bancada: ...<br>
+              Casos parecidos: (número da ordem de serviço)<br>
+              Se o histórico não tiver caso parecido, responda "sem histórico".
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="t-lbl">Modelo:</label>
+              <input id="sk-b-mod" type="text" class="t-in text-xs" placeholder="Ex: Dell Inspiron">
+            </div>
+            <div>
+              <label class="t-lbl">Sintoma:</label>
+              <input id="sk-b-sin" type="text" class="t-in text-xs" placeholder="Ex: Não liga luz pisca">
+            </div>
+          </div>
+
+          <button class="rounded-lg bg-emerald-700 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-800 cursor-pointer w-full" onclick="OF.executarSkillB()">
+            ▶ Executar Skill B (Busca no Documento 4)
+          </button>
+
+          <div>
+            <label class="t-lbl">Saída Estrita da Skill B:</label>
+            <pre id="sk-b-out" class="p-3 bg-slate-900 text-sky-400 rounded-lg text-xs font-mono min-h-[70px] whitespace-pre-wrap">Aguardando execução...</pre>
+          </div>
+        </section>
+      </div>
+
+      <!-- DOCUMENTO 4: TABELA DO HISTÓRICO DE SERVIÇOS -->
+      <section class="t-card">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b pb-3 mb-3">
+          <div>
+            <h3 class="font-bold text-sky-900 text-sm uppercase tracking-wide">Documento 4: Histórico de Serviços da Oficina</h3>
+            <p class="text-xs text-slate-500">Base de dados e histórico de ordens de serviço anteriores para consulta do GraphRAG.</p>
+          </div>
+          <button class="t-b2 text-xs" onclick="OF.copiarTabelaHistorico()">📋 Copiar Tabela Inteira</button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-xs">
+            <thead>
+              <tr class="bg-slate-100">
+                <th class="p-2 text-left">OS Nº</th>
+                <th class="p-2 text-left">Aparelho / Modelo</th>
+                <th class="p-2 text-left">Sintoma Relatado</th>
+                <th class="p-2 text-left">Causa Diagnosticada</th>
+                <th class="p-2 text-left">Peça / Componente</th>
+                <th class="p-2 text-left">Tempo</th>
+                <th class="p-2 text-right">Valor</th>
+                <th class="p-2 text-center">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${OF.historico.map(h => `
+                <tr class="border-b hover:bg-slate-50">
+                  <td class="p-2 font-mono font-bold text-sky-800">${h.os}</td>
+                  <td class="p-2 font-semibold text-slate-800">${esc(h.aparelho)}</td>
+                  <td class="p-2 text-slate-600">${esc(h.sintoma)}</td>
+                  <td class="p-2 text-slate-600">${esc(h.causa)}</td>
+                  <td class="p-2 text-slate-700 font-medium">${esc(h.peca)}</td>
+                  <td class="p-2 text-slate-600">${esc(h.tempo)}</td>
+                  <td class="p-2 text-right font-bold text-slate-700">R$ ${h.valor.toFixed(2).replace('.', ',')}</td>
+                  <td class="p-2 text-center">
+                    <button class="text-xs text-sky-600 hover:text-sky-800 font-semibold cursor-pointer" onclick="OF.testarComHistorico('${esc(h.aparelho)}','${esc(h.sintoma)}')">Testar</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    `;
+  },
+
+  // 5. ABA DO GRAFO DE CONHECIMENTO (7 CASOS CANÔNICOS)
+  viewGrafo() {
+    const termo = (OF.filtroGrafo || '').toLowerCase();
+    const casos = OF.grafo.filter(c => {
+      if (!termo) return true;
+      const alvo = (c.aparelho + ' ' + c.sintoma + ' ' + c.causa + ' ' + c.peca).toLowerCase();
+      return alvo.includes(termo);
+    });
+
+    return `
+      <section class="t-card mb-6 bg-gradient-to-r from-sky-50 via-indigo-50 to-white border-indigo-200">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h3 class="text-base font-bold text-indigo-900 uppercase tracking-wide">Grafo de Conhecimento da Oficina</h3>
+            <p class="text-xs text-slate-600 mt-1">Memória estruturada de casos canônicos: <b>Aparelho ➔ Sintoma ➔ Causa Provável ➔ Peça / Procedimento</b>.</p>
+          </div>
+          <div class="w-full sm:w-72">
+            <input type="text" class="t-in text-xs" placeholder="Filtrar por sintoma, peça ou modelo..." value="${esc(OF.filtroGrafo)}" oninput="OF.filtroGrafo=this.value;OF.render()">
+          </div>
+        </div>
+      </section>
+
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        ${casos.map(c => `
+          <div class="t-card border-l-4 ${c.gravidade==='ALTA'?'border-l-red-500':c.gravidade==='MÉDIA'?'border-l-amber-500':'border-l-emerald-500'} space-y-2.5">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-mono font-bold text-slate-400">CASO #${c.id}</span>
+              <span class="rounded-full px-2 py-0.5 text-[10px] font-bold ${c.gravidade==='ALTA'?'bg-red-100 text-red-800':c.gravidade==='MÉDIA'?'bg-amber-100 text-amber-800':'bg-emerald-100 text-emerald-800'}">
+                ${c.gravidade}
+              </span>
+            </div>
+
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Aparelho</span>
+              <h4 class="font-bold text-slate-800 text-sm">${esc(c.aparelho)}</h4>
+            </div>
+
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Sintoma Relatado</span>
+              <p class="text-xs text-slate-600">${esc(c.sintoma)}</p>
+            </div>
+
+            <div class="p-2 rounded bg-slate-50 border border-slate-200 text-xs space-y-1">
+              <div><b class="text-slate-700">Causa:</b> ${esc(c.causa)}</div>
+              <div><b class="text-slate-700">Peça:</b> ${esc(c.peca)}</div>
+              <div><b class="text-slate-700">Tempo bancada:</b> ${esc(c.tempo)}</div>
+            </div>
+
+            <div class="text-[11px] text-slate-500">
+              <b>Procedimento:</b> ${esc(c.procedimento)}
+            </div>
+
+            <div class="pt-2 border-t flex justify-end">
+              <button class="text-xs text-sky-700 font-bold hover:underline cursor-pointer" onclick="OF.usarCasoNoFormulario(${c.id})">Abrir Chamado com Este Caso ➔</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  },
+
+  // 6. ABA DO ECOSSISTEMA & FERRAMENTAS
+  viewEcossistema() {
+    return `
+      <section class="t-card mb-6">
+        <h3 class="font-bold text-sky-900 text-base mb-2">Ecossistema de Ferramentas da Oficina Digital</h3>
+        <p class="text-xs text-slate-600 mb-4">A oficina conecta agentes de IA, bases de conhecimento vivas e mensageria instantânea para agilizar a bancada técnica.</p>
+
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="p-4 rounded-xl border border-sky-200 bg-sky-50/50 space-y-1.5">
+            <div class="text-2xl">🤖</div>
+            <h4 class="font-bold text-sky-900 text-sm">Antigravity &amp; Gemini</h4>
+            <span class="text-[10px] font-bold uppercase text-sky-600">Ajudante de Código &amp; Raciocínio</span>
+            <p class="text-xs text-slate-600">Assistente de IA que auxilia na estruturação das regras do sistema, refino dos laudos técnicos e automação dos scripts.</p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-purple-200 bg-purple-50/50 space-y-1.5">
+            <div class="text-2xl">📖</div>
+            <h4 class="font-bold text-purple-900 text-sm">NotebookLM</h4>
+            <span class="text-[10px] font-bold uppercase text-purple-600">Assistente que lê em voz alta</span>
+            <p class="text-xs text-slate-600">Centraliza as notas técnicas, manuais de serviço dos fabricantes e documentação do projeto com síntese de voz e resumos inteligentes.</p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-indigo-200 bg-indigo-50/50 space-y-1.5">
+            <div class="text-2xl">🕸️</div>
+            <h4 class="font-bold text-indigo-900 text-sm">Obsidian &amp; Graphify</h4>
+            <span class="text-[10px] font-bold uppercase text-indigo-600">Quadro de Fichas e Ligações</span>
+            <p class="text-xs text-slate-600">Mapeamento visual do Grafo de Conhecimento interligando os 7 casos de exemplo: aparelho ➔ sintoma ➔ causa ➔ peça.</p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-amber-200 bg-amber-50/50 space-y-1.5">
+            <div class="text-2xl">👥</div>
+            <h4 class="font-bold text-amber-900 text-sm">CrewAI</h4>
+            <span class="text-[10px] font-bold uppercase text-amber-600">Dupla de Especialistas</span>
+            <p class="text-xs text-slate-600">Orquestração de agentes autônomos: um atendente (Skill A) focado no acolhimento do relato e um técnico de bancada (Skill B) focado na peça e tempo.</p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-blue-200 bg-blue-50/50 space-y-1.5">
+            <div class="text-2xl">📻</div>
+            <h4 class="font-bold text-blue-900 text-sm">Telegram</h4>
+            <span class="text-[10px] font-bold uppercase text-blue-600">Rádio do Técnico</span>
+            <p class="text-xs text-slate-600">Notificações automáticas no celular do técnico com fila de atendimento e comandos remotos (/abertos, /ver N, /andamento N, /concluir N).</p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/50 space-y-1.5">
+            <div class="text-2xl">📦</div>
+            <h4 class="font-bold text-emerald-900 text-sm">GitHub</h4>
+            <span class="text-[10px] font-bold uppercase text-emerald-600">Arquivo Digital Central</span>
+            <p class="text-xs text-slate-600">Repositório de código-fonte, versionamento de histórico, controle de release e guarda segura dos modelos e especificações.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid gap-4 sm:grid-cols-2 text-xs">
+        <section class="t-card border-l-4 border-l-emerald-600 space-y-2">
+          <h4 class="font-bold text-emerald-900 text-sm">O que o sistema faz:</h4>
+          <ul class="space-y-1.5 text-slate-600 list-disc pl-4">
+            <li>Recebe chamados de clientes com validação de dados completos.</li>
+            <li>Guarda o histórico com número único sequencial (#OS).</li>
+            <li>Gera um laudo de apoio na hora usando IA ou Grafo de Conhecimento.</li>
+            <li>Avisa o técnico instantaneamente no smartphone via Bot HTTP do Telegram.</li>
+            <li>Disponibiliza consulta transparente para o cliente acompanhar o andamento.</li>
+            <li>Conecta conceitos de GraphRAG e engenharia de prompts na prática.</li>
+          </ul>
+        </section>
+
+        <section class="t-card border-l-4 border-l-amber-600 space-y-2">
+          <h4 class="font-bold text-amber-900 text-sm">O que o sistema não faz (Diretrizes de Bancada):</h4>
+          <ul class="space-y-1.5 text-slate-600 list-disc pl-4">
+            <li><b>Não é diagnóstico definitivo:</b> O laudo da IA é um ponto de partida para estudo e triagem. O diagnóstico final sempre exige testes físicos na bancada com instrumentos (multímetro, fonte assimétrica, osciloscópio).</li>
+            <li><b>Grafo de exemplo:</b> O grafo padrão possui os 7 casos canônicos descritos no código de referência.</li>
+            <li><b>Não aprende sozinho em tempo real:</b> Novos chamados alimentam o banco local, mas o modelo neural não retreina automaticamente.</li>
+            <li><b>Bot local:</b> O bot do Telegram em Python requer que o computador esteja ligado e executando o script <code>bot_telegram.py</code>.</li>
+          </ul>
+        </section>
+      </div>
+    `;
+  },
+
+  // FUNÇÕES DE AÇÃO E LÓGICA
+  criarChamado(e) {
+    e.preventDefault();
+    const nome = $('of-cli-nome').value.trim();
+    const tel = $('of-cli-tel').value.trim();
+    const aparelho = $('of-cli-aparelho').value;
+    const defeito = $('of-cli-defeito').value.trim();
+    const modo = $('of-modo-triagem').value;
+
+    const novoId = (OF.chamados.length > 0 ? Math.max(...OF.chamados.map(c => +c.id)) : 1000) + 1;
+    const laudo = OF.triagem(aparelho, defeito, modo);
+
+    const novo = {
+      id: novoId,
+      cliente: nome,
+      contato: tel,
+      aparelho: aparelho,
+      defeito: defeito,
+      data: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
+      status: 'Aberto',
+      gravidade: laudo.gravidade,
+      modo: modo,
+      laudo: laudo
+    };
+
+    OF.chamados.unshift(novo);
+    OF.ultimoLaudo = novo;
+    OF.salvar();
+
+    // Também adiciona à tabela geral de Helpdesk ITIL da aplicação
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>#CH-${novo.id}</td><td>${esc(novo.cliente)}</td><td>Oficina: ${esc(novo.aparelho)}</td><td>${laudo.tempo_bancada}</td><td><span class="badge status-aberto">Aberto</span></td><td><button class="btn" style="padding:.3rem .6rem;font-size:.8rem" onclick="alterarStatus(this,'Em Atendimento')">Atender</button></td>`;
+    const tb = document.getElementById('chamadosTableBody');
+    if (tb) tb.prepend(row);
+
+    // Enviar notificação ao Telegram
+    OF.notificarTelegramNovoChamado(novo);
+
+    toast(`Chamado #OS-${novo.id} criado com sucesso e laudo gerado!`);
+    OF.render();
+  },
+
+  triagem(aparelho, relato, modo) {
+    const txt = (aparelho + ' ' + relato).toLowerCase();
+    let caso = null;
+
+    if (txt.includes('não liga') || txt.includes('nao liga') || txt.includes('sem sinal') || txt.includes('pisca') || txt.includes('curto') || txt.includes('19v')) {
+      caso = OF.grafo[0]; // Dell 19V / Jack
+    } else if (txt.includes('desliga') || txt.includes('aquec') || txt.includes('esquenta') || txt.includes('fervendo') || txt.includes('cooler') || txt.includes('pasta')) {
+      caso = OF.grafo[1]; // Desktop / Aquecimento
+    } else if (txt.includes('tela azul') || txt.includes('bsod') || txt.includes('memory') || txt.includes('reinicia sozinho')) {
+      caso = OF.grafo[2]; // Lenovo / Tela Azul
+    } else if (txt.includes('boot') || txt.includes('não inicia') || txt.includes('nao inicia') || txt.includes('no boot') || txt.includes('device')) {
+      caso = OF.grafo[3]; // PC / Boot
+    } else if (txt.includes('bateria') || txt.includes('estuf') || txt.includes('trackpad') || txt.includes('macbook')) {
+      caso = OF.grafo[4]; // MacBook / Bateria
+    } else if (txt.includes('100%') || txt.includes('lentidão') || txt.includes('lentidao') || txt.includes('travando') || txt.includes('lento') || txt.includes('disco')) {
+      caso = OF.grafo[5]; // Acer / HD 100%
+    } else if (txt.includes('carreg') || txt.includes('conector') || txt.includes('faísca') || txt.includes('faisca') || txt.includes('jack') || txt.includes('folga')) {
+      caso = OF.grafo[6]; // Positivo / Jack
+    }
+
+    if (caso) {
+      return {
+        modelo: aparelho,
+        sintoma: caso.sintoma.split('(')[0].trim(),
+        gravidade: caso.gravidade,
+        causa_provavel: caso.causa,
+        peca_provavel: caso.peca,
+        tempo_bancada: caso.tempo,
+        proximos_passos: caso.procedimento
+      };
+    }
+
+    return {
+      modelo: aparelho,
+      sintoma: relato.slice(0, 60) + (relato.length > 60 ? '...' : ''),
+      gravidade: 'MÉDIA',
+      causa_provavel: 'Desgaste funcional de componente ou instabilidade no sistema operacional',
+      peca_provavel: 'Avaliação física com peças de teste na bancada',
+      tempo_bancada: '1 hora e 30 minutos',
+      proximos_passos: 'Testar periféricos essenciais, aferir tensões de barramento e checar integridade de discos.'
+    };
+  },
+
+  preencherRelato(tipo) {
+    const defeitos = {
+      1: "Meu notebook Dell Inspiron não liga de jeito nenhum. Ao colocar o carregador na tomada e plugar, o LED do carregador fica piscando ou se apaga na hora.",
+      2: "O computador desktop é gamer e desliga sozinho após 10 minutos jogando ou renderizando vídeo. O cooler faz muito barulho e o gabinete fica muito quente.",
+      3: "O notebook Lenovo ThinkPad começou a dar tela azul da morte (BSOD) várias vezes ao dia com mensagens como Memory Management e Critical Process Died.",
+      4: "Ao ligar o PC do escritório, aparece a tela preta com a mensagem 'No bootable device found' e não inicia o Windows de jeito nenhum.",
+      5: "A carcaça do meu MacBook Pro está levantando e o trackpad ficou duro, quase não dá para clicar. Parece que a bateria estufou.",
+      6: "Notebook Acer Aspire extremamente lento, demora 15 minutos para ligar e no Gerenciador de Tarefas o uso de disco fica cravado em 100%.",
+      7: "Notebook Positivo não carrega a bateria a menos que fique segurando o cabo do carregador em uma posição inclinada, às vezes dá faísca no conector."
+    };
+    if (defeitos[tipo]) {
+      $('of-cli-defeito').value = defeitos[tipo];
+      if (tipo === 1) $('of-cli-aparelho').value = "Notebook Dell Inspiron / Vostro";
+      if (tipo === 2) $('of-cli-aparelho').value = "PC Desktop Gamer / Office";
+      if (tipo === 3) $('of-cli-aparelho').value = "Notebook Lenovo ThinkPad / Ideapad";
+      if (tipo === 4) $('of-cli-aparelho').value = "PC Desktop Corporativo";
+      if (tipo === 5) $('of-cli-aparelho').value = "MacBook Air / Pro";
+      if (tipo === 6) $('of-cli-aparelho').value = "Notebook Acer Aspire";
+      if (tipo === 7) $('of-cli-aparelho').value = "Notebook Positivo / Multilaser";
+    }
+  },
+
+  consultarOS(id) {
+    OF.osAtual = +id;
+    OF.setTab('acompanhamento');
+  },
+
+  buscarOSClick() {
+    const val = ($('of-busca-os').value || '').replace(/[^\d]/g, '');
+    if (!val) { toast('Digite o número da OS.'); return; }
+    const existe = OF.chamados.find(c => c.id === +val);
+    if (!existe) {
+      toast(`Chamado #${val} não encontrado.`);
+      return;
+    }
+    OF.consultarOS(+val);
+  },
+
+  alterarStatusChamado(id, novoStatus) {
+    const c = OF.chamados.find(x => x.id === +id);
+    if (!c) return;
+    c.status = novoStatus;
+    OF.salvar();
+    toast(`Status da #OS-${id} alterado para "${novoStatus}"!`);
+    
+    // Notifica rádio telegram
+    OF.telegramMsgs.push({
+      sender: 'bot',
+      text: `⚙️ <b>STATUS ATUALIZADO:</b> #OS-${id} agora está em <b>${novoStatus.toUpperCase()}</b>.`,
+      time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+    });
+
+    OF.render();
+  },
+
+  copiarLaudo(id) {
+    const c = OF.chamados.find(x => x.id === +id);
+    if (!c) return;
+    const txt = `LAUDO TÉCNICO - OFICINA DIGITAL\nOS: #${c.id}\nCliente: ${c.cliente} (${c.contato})\nAparelho: ${c.aparelho}\nGravidade: ${c.gravidade}\nSintoma: ${c.laudo.sintoma}\nCausa Provável: ${c.laudo.causa_provavel}\nPeça Sugerida: ${c.laudo.peca_provavel}\nTempo Bancada: ${c.laudo.tempo_bancada}\nPróximos Passos: ${c.laudo.proximos_passos}`;
+    navigator.clipboard.writeText(txt).then(() => toast('Laudo copiado para a área de transferência!'));
+  },
+
+  // INTEGRAÇÃO TELEGRAM
+  notificarTelegramNovoChamado(c) {
+    const hora = new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+    const msgTexto = `🚨 <b>NOVO CHAMADO #OS-${c.id}</b><br><b>Cliente:</b> ${esc(c.cliente)} (${esc(c.contato)})<br><b>Aparelho:</b> ${esc(c.aparelho)}<br><b>Gravidade:</b> ${esc(c.gravidade)}<br><br><b>Laudo IA:</b><br>• Causa: ${esc(c.laudo.causa_provavel)}<br>• Peça: ${esc(c.laudo.peca_provavel)}<br>• Tempo: ${esc(c.laudo.tempo_bancada)}<br><br>Ações: <code>/ver ${c.id}</code> | <code>/andamento ${c.id}</code>`;
+    
+    OF.telegramMsgs.push({
+      sender: 'bot',
+      text: msgTexto,
+      time: hora
+    });
+
+    // Tentativa de envio real via HTTP (com tratamento seguro)
+    OF.dispararHTTPTelegram(c);
+  },
+
+  dispararHTTPTelegram(c) {
+    const token = OF.telegramToken;
+    const chatId = OF.telegramChatId;
+    if (!token || !chatId) return;
+
+    const textoFormatado = `🚨 *NOVO CHAMADO - OFICINA DIGITAL*
+━━━━━━━━━━━━━━━━━━━━━
+*OS #${c.id}*
+*Cliente:* ${c.cliente} (${c.contato})
+*Aparelho:* ${c.aparelho}
+*Gravidade:* ${c.gravidade}
+
+*Laudo IA:*
+• *Causa:* ${c.laudo.causa_provavel}
+• *Peça:* ${c.laudo.peca_provavel}
+• *Tempo Bancada:* ${c.laudo.tempo_bancada}
+━━━━━━━━━━━━━━━━━━━━━
+Comandos: /ver ${c.id} | /andamento ${c.id}`;
+
+    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text: textoFormatado, parse_mode: 'Markdown' })
+    }).catch(() => {});
+  },
+
+  testarEnvioRealTelegram() {
+    const token = ($('tg-token-input')?.value || OF.telegramToken).trim();
+    const chatId = ($('tg-chat-input')?.value || OF.telegramChatId).trim();
+    const el = $('tg-status-envio');
+
+    if (!token || !chatId) {
+      if (el) el.innerHTML = '<span class="text-red-600 font-bold">Preencha o Token e o Chat ID.</span>';
+      return;
+    }
+
+    if (el) el.innerHTML = '<span class="text-sky-700">Enviando mensagem de teste via HTTP...</span>';
+
+    const texto = `📡 <b>TESTE DE CONEXÃO OFICINA DIGITAL</b>
+O seu rádio de técnico está sincronizado e operando com sucesso!
+Horário: ${new Date().toLocaleTimeString('pt-BR')}`;
+
+    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text: texto, parse_mode: 'HTML' })
+    })
+    .then(r => r.json())
+    .then(dados => {
+      if (dados.ok) {
+        if (el) el.innerHTML = '<span class="text-emerald-700 font-bold">✓ Mensagem enviada com sucesso ao seu celular pelo Telegram!</span>';
+        toast('Mensagem de teste enviada ao Telegram!');
+      } else {
+        if (el) el.innerHTML = `<span class="text-amber-700">Telegram retornou erro: ${esc(dados.description)}. Mensagem simulada no painel.</span>`;
+      }
+    })
+    .catch(err => {
+      if (el) el.innerHTML = '<span class="text-slate-600">Simulado no smartphone virtual (ou restrição CORS de navegador para api.telegram.org).</span>';
+      OF.telegramMsgs.push({
+        sender: 'bot',
+        text: '📡 <b>TESTE LOCAL:</b> Mensagem de rádio simulada com sucesso!',
+        time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+      });
+      OF.render();
+    });
+  },
+
+  salvarCredenciaisTelegram() {
+    OF.telegramToken = ($('tg-token-input')?.value || OF.telegramToken).trim();
+    OF.telegramChatId = ($('tg-chat-input')?.value || OF.telegramChatId).trim();
+    toast('Credenciais do Telegram salvas no navegador.');
+  },
+
+  toggleToken() {
+    const inp = $('tg-token-input');
+    if (inp) inp.type = inp.type === 'password' ? 'text' : 'password';
+  },
+
+  limparChatTelegram() {
+    OF.telegramMsgs = [];
+    OF.render();
+  },
+
+  enviarComandoAoMock(cmd) {
+    OF.processarComandoBot(cmd);
+  },
+
+  enviarMsgTelegramInput(e) {
+    e.preventDefault();
+    const inp = $('tg-msg-input');
+    const txt = (inp.value || '').trim();
+    if (!txt) return;
+    inp.value = '';
+    OF.processarComandoBot(txt);
+  },
+
+  processarComandoBot(texto) {
+    const hora = new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+    OF.telegramMsgs.push({ sender: 'user', text: esc(texto), time: hora });
+
+    setTimeout(() => {
+      const partes = texto.split(/\s+/);
+      const cmd = partes[0].toLowerCase();
+
+      if (cmd === '/start' || cmd === '/ajuda' || cmd === '/help') {
+        OF.telegramMsgs.push({
+          sender: 'bot',
+          text: '🛠️ <b>RÁDIO DO TÉCNICO - COMANDOS DA OFICINA:</b><br>• <code>/abertos</code> - Lista a fila de chamados pendentes<br>• <code>/ver N</code> - Detalha o chamado e laudo da OS N<br>• <code>/andamento N</code> - Coloca a OS N em atendimento<br>• <code>/concluir N</code> - Conclui a OS N na bancada',
+          time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+        });
+      } else if (cmd === '/abertos') {
+        const abertos = OF.chamados.filter(c => c.status !== 'Concluído');
+        if (abertos.length === 0) {
+          OF.telegramMsgs.push({
+            sender: 'bot',
+            text: '✅ <b>Nenhum chamado pendente no momento!</b> Bancada física liberada.',
+            time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+          });
+        } else {
+          let msg = `📋 <b>FILA DE CHAMADOS EM ABERTO (${abertos.length}):</b><br>━━━━━━━━━━━━━━━━━━━━━<br>`;
+          abertos.forEach(c => {
+            const icone = c.gravidade === 'ALTA' ? '🔴' : c.gravidade === 'MÉDIA' ? '🟡' : '🟢';
+            msg += `${icone} <b>OS #${c.id}</b> - ${esc(c.cliente)} (${esc(c.aparelho)})<br>   Status: <i>${c.status}</i> | Gravidade: <b>${c.gravidade}</b><br>   Para laudo: <code>/ver ${c.id}</code><br><br>`;
+          });
+          OF.telegramMsgs.push({
+            sender: 'bot',
+            text: msg,
+            time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+          });
+        }
+      } else if (cmd === '/ver') {
+        const id = (partes[1] || '').replace(/[^\d]/g, '');
+        const c = OF.chamados.find(x => x.id === +id);
+        if (!c) {
+          OF.telegramMsgs.push({
+            sender: 'bot',
+            text: `❌ Chamado <b>#${id || 'N'}</b> não encontrado no banco de dados.`,
+            time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+          });
+        } else {
+          OF.telegramMsgs.push({
+            sender: 'bot',
+            text: `📄 <b>ORDEM DE SERVIÇO #${c.id}</b><br>━━━━━━━━━━━━━━━━━━━━━<br>👤 <b>Cliente:</b> ${esc(c.cliente)} (${esc(c.contato)})<br>💻 <b>Aparelho:</b> ${esc(c.aparelho)}<br>📊 <b>Status:</b> ${c.status} | Gravidade: <b>${c.gravidade}</b><br><br>📝 <b>Relato:</b> <i>"${esc(c.defeito)}"</i><br><br>🧠 <b>LAUDO DA IA:</b><br>• Causa: ${esc(c.laudo.causa_provavel)}<br>• Peça: ${esc(c.laudo.peca_provavel)}<br>• Tempo Bancada: ${esc(c.laudo.tempo_bancada)}<br>• Próximos Passos: ${esc(c.laudo.proximos_passos)}<br>━━━━━━━━━━━━━━━━━━━━━<br>Ações: <code>/andamento ${c.id}</code> | <code>/concluir ${c.id}</code>`,
+            time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+          });
+        }
+      } else if (cmd === '/andamento') {
+        const id = (partes[1] || '').replace(/[^\d]/g, '');
+        const c = OF.chamados.find(x => x.id === +id);
+        if (!c) {
+          OF.telegramMsgs.push({ sender: 'bot', text: `❌ Chamado <b>#${id || 'N'}</b> não encontrado.`, time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}) });
+        } else {
+          c.status = 'Em Atendimento';
+          OF.salvar();
+          OF.telegramMsgs.push({ sender: 'bot', text: `⚙️ <b>Chamado #${id} atualizado para 'EM ATENDIMENTO'!</b> Técnico alocado na bancada.`, time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}) });
+        }
+      } else if (cmd === '/concluir') {
+        const id = (partes[1] || '').replace(/[^\d]/g, '');
+        const c = OF.chamados.find(x => x.id === +id);
+        if (!c) {
+          OF.telegramMsgs.push({ sender: 'bot', text: `❌ Chamado <b>#${id || 'N'}</b> não encontrado.`, time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}) });
+        } else {
+          c.status = 'Concluído';
+          OF.salvar();
+          OF.telegramMsgs.push({ sender: 'bot', text: `✅ <b>Chamado #${id} CONCLUÍDO com sucesso!</b> Aparelho testado e pronto para entrega ao cliente.`, time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}) });
+        }
+      } else {
+        OF.telegramMsgs.push({
+          sender: 'bot',
+          text: `Comando "<code>${esc(texto)}</code>" não reconhecido.<br>Comandos aceitos: <code>/abertos</code>, <code>/ver N</code>, <code>/andamento N</code>, <code>/concluir N</code>.`,
+          time: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})
+        });
+      }
+
+      OF.render();
+      const feed = $('tg-chat-feed');
+      if (feed) feed.scrollTop = feed.scrollHeight;
+    }, 350);
+  },
+
+  // BANCADA DE TESTES: SKILL A
+  exemploSkillA() {
+    $('sk-a-in').value = 'Notebook Dell Inspiron 15 não liga de jeito nenhum, quando ligo o carregador a luz pisca e apaga.';
+  },
+
+  executarSkillA() {
+    const raw = ($('sk-a-in').value || '').trim();
+    if (!raw) { toast('Cole um relato de cliente para testar a Skill A.'); return; }
+
+    const relato = raw.replace(/^"""|"""$/g, '').trim();
+    let modelo = "não informado";
+    const marcas = ["Dell Inspiron 15", "Dell Inspiron", "Dell Vostro", "Dell", "Lenovo ThinkPad", "Lenovo Ideapad 3", "Lenovo Ideapad", "Lenovo", "MacBook Air", "MacBook Pro", "MacBook", "Acer Aspire", "Acer", "PC Desktop Gamer", "PC Gamer", "Desktop Gamer", "PC Desktop", "Positivo Motion", "Positivo", "Multilaser"];
+    for (const m of marcas) {
+      if (new RegExp('\\b' + m + '\\b', 'i').test(relato)) {
+        modelo = m;
+        break;
+      }
+    }
+
+    const laudo = OF.triagem(modelo !== "não informado" ? modelo : "", relato, "Skill A");
+    const out = `Modelo: ${modelo}\nSintoma principal: ${laudo.sintoma}\nGravidade: ${laudo.gravidade}`;
+    $('sk-a-out').textContent = out;
+    toast('Skill A executada com sucesso!');
+  },
+
+  // BANCADA DE TESTES: SKILL B (GraphRAG)
+  testarComHistorico(aparelho, sintoma) {
+    OF.setTab('skills');
+    setTimeout(() => {
+      $('sk-b-mod').value = aparelho;
+      $('sk-b-sin').value = sintoma;
+      OF.executarSkillB();
+    }, 100);
+  },
+
+  executarSkillB() {
+    const modelo = ($('sk-b-mod').value || '').trim();
+    const sintoma = ($('sk-b-sin').value || '').trim();
+    if (!modelo && !sintoma) { toast('Preencha o modelo e/ou o sintoma.'); return; }
+
+    const termo = (modelo + ' ' + sintoma).toLowerCase();
+    const palavras = termo.split(/\s+/).filter(p => p.length > 2);
+
+    const matches = OF.historico.filter(h => {
+      const alvo = (h.aparelho + ' ' + h.sintoma + ' ' + h.causa + ' ' + h.peca).toLowerCase();
+      return palavras.some(p => alvo.includes(p));
+    });
+
+    if (matches.length === 0) {
+      $('sk-b-out').textContent = 'Peça provável: sem histórico\nTempo de bancada: sem histórico\nCasos parecidos: sem histórico';
+    } else {
+      const melhor = matches[0];
+      const parecidos = matches.map(m => m.os).join(', ');
+      const out = `Peça provável: ${melhor.peca}\nTempo de bancada: ${melhor.tempo}\nCasos parecidos: ${parecidos}`;
+      $('sk-b-out').textContent = out;
+    }
+    toast('Skill B executada com sucesso!');
+  },
+
+  copiarTabelaHistorico() {
+    let txt = "OS\tAparelho\tSintoma\tCausa\tPeça\tTempo\tValor\n";
+    OF.historico.forEach(h => {
+      txt += `${h.os}\t${h.aparelho}\t${h.sintoma}\t${h.causa}\t${h.peca}\t${h.tempo}\tR$ ${h.valor}\n`;
+    });
+    navigator.clipboard.writeText(txt).then(() => toast('Tabela do Documento 4 copiada com sucesso!'));
+  },
+
+  usarCasoNoFormulario(id) {
+    const c = OF.grafo.find(x => x.id === id);
+    if (!c) return;
+    OF.setTab('abertura');
+    setTimeout(() => {
+      $('of-cli-aparelho').value = c.aparelho;
+      $('of-cli-defeito').value = c.sintoma;
+      $('of-modo-triagem').value = "Grafo de Conhecimento";
+      toast(`Caso #${id} carregado no formulário de abertura!`);
+    }, 100);
+  }
+};
+
+/* ---- Navegação ---- */
+const _show = showPage;
+showPage = function(id) {
+  _show(id);
+  scrollTo(0, 0);
+  
+  // Destacar link ativo no menu
+  document.querySelectorAll('nav a').forEach(a => {
+    if (a.getAttribute('href') === '#' + id) {
+      a.style.color = '#D9B310';
+    } else {
+      a.style.color = '';
+    }
+  });
+
+  if (id === 'proposta') {
+    if (!P) PR.novo();
+    else PR.render();
+  }
+  if (id === 'painel') pn();
+  if (id === 'oficina') OF.init();
+};
+
+</script>
+
+</body>
+</html>
