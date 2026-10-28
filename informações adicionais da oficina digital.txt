@@ -1,0 +1,159 @@
+Uma oficina de conserto de computadores. Nela, a inteligência artificial ajuda a organizar os pedidos dos clientes. Você monta cada parte pedindo ajuda ao Gemini.
+
+O caminho de um chamado
+
+O cliente abre o chamado no site.Ele escreve o nome, o contato, o aparelho e o defeito. 2. 2
+
+A API guarda o chamado.É um programa no seu computador que recebe o pedido e dá um número. 3. 3
+
+A IA faz um laudo.Ela diz a prioridade, a causa provável e os próximos passos. 4. 4
+
+O técnico recebe no Telegram.Ele vê o aviso no celular e usa comandos: /abertos, /ver 1, /andamento 1, /concluir 1. 5. 5
+
+O cliente acompanha no site.Ele digita o número e vê o status e o laudo.
+
+Ferramenta
+
+Na oficina
+
+Antigravity e Gemini
+
+Ajudante de código (assistente de IA)
+
+NotebookLM
+
+Assistente que lê em voz alta
+
+Obsidian e Graphify
+
+Quadro de Fichas e Ligações
+
+CrewAI
+
+Dupla de especialistas
+
+Telegram
+
+Rádio do Técnico
+
+GitHub
+
+Arquivo Digital Central (no final)
+
+Como a IA faz o laudo
+
+O projeto tem três jeitos de fazer a triagem. O padrão é o mais simples:
+
+Jeito
+
+O que faz
+
+Simples (padrão)
+
+Procura palavras-chave no relato. Não usa IA.
+
+Grafo de Conhecimento
+
+Consulta uma memória de casos da oficina: aparelho → sintoma → causa → peça. Com a chave do Gemini, a IA refina a resposta. Sem a chave, usa regras locais.
+
+CrewAI
+
+Dois agentes de IA: um atendente e um técnico. Roda no Google Colab, separado da API. É opcional.
+
+O que ele faz
+
+Recebe chamados e guarda o histórico.
+
+Gera um laudo de apoio na hora.
+
+Avisa o técnico no celular.
+
+Mostra como a IA, o grafo e o bot se conectam.
+
+O que ele não faz
+
+Não é diagnóstico de verdade. O laudo é um ponto de partida para estudar. Sempre confira na bancada.
+
+O grafo é pequeno: só 7 casos de exemplo, escritos no código.
+
+Ele não aprende. Um chamado novo não entra na memória, e ela volta ao início quando a API reinicia.
+
+Sem a chave do Gemini, a resposta vem de regras simples.
+
+O código criado pelo Gemini pode errar e ficar diferente do de outros alunos. Teste sempre e confira com a Especificação.
+
+O bot do Telegram só funciona com o seu computador ligado.
+
+Não está pronto para clientes reais: não tem login nem proteção de dados.
+
+BOT DO TELEGRAM
+
+Pedido: mostrar o meu Id
+
+Crie um programa pequeno em Python que mostra, na tela, o número do chat de quem mandar uma mensagem ao meu bot do Telegram. Leia o token do arquivo .env e NUNCA o escreva no código. Explique como rodar.
+
+C) Pedir o código ao Gemini
+
+Pedido do Telegram
+
+Crie o aviso e os comandos do Telegram, sem biblioteca extra (use a API oficial por HTTP). Quando chegar um chamado, avise o técnico com o laudo. Aceite só comandos do chat do técnico: /abertos (lista a fila), /ver N (mostra o laudo), /andamento N e /concluir N.
+
+O token do bot e o número do chat devem vir de um arquivo .env (use python-dotenv), NUNCA escritos no código. Crie também um arquivo .env.example com os NOMES das variáveis e sem valores, e coloque .env no .gitignore. No fim, me diga os nomes das variáveis que você escolheu e em qual pasta o arquivo .env deve ficar. Se as variáveis faltarem, só escreva o aviso na tela e continue funcionando. Explique como testar no meu computador, sem endereço público (buscando as mensagens do bot).
+
+Como o programa recebe as mensagens
+
+O pedido manda "buscar as mensagens do bot". Isso quer dizer que o seu programa pergunta ao Telegram, de tempos em tempos, se chegou algo novo (getUpdates). Assim você não precisa de endereço público na internet. Só funciona enquanto o programa estiver ligado no seu computador.
+
+Ordem sugerida: ligue a API e o programa do Telegram, abra um chamado no site e veja o aviso chegar no celular. Depois teste cada comando.
+
+O que aconteceu
+
+O que fazer
+
+O bot não responde nada
+
+O programa está ligado? Você enviou /start ao bot? Reinicie o programa depois de salvar o .env.
+
+Erro "401" ou "Unauthorized"
+
+O token está errado ou foi trocado. Copie de novo do BotFather (/mybots).
+
+O aviso não chega, mas o bot responde
+
+O Id do chat está errado, ou você não mandou /start ao bot.
+
+O bot responde a um comando e some
+
+O programa parou. Veja o terminal: pode ter dado erro.
+
+Apareceu "409" ou "Conflict"
+
+Há dois programas usando o mesmo bot. Feche um deles.
+
+Fechei o computador e o bot parou
+
+É normal. Ele só roda com o programa ligado.
+
+Bancada de Testes de IA
+
+Aqui você testa a IA antes de usar no trabalho de verdade. Duas ferramentas de prompt (Skills):
+
+| Skill | Entra | Sai | | --- | --- | --- | | A — Triagem | Relato do cliente | Modelo + Sintoma + Gravidade | | B — Busca no histórico | Modelo + Sintoma | Peça provável + tempo de bancada |
+
+O texto """COLE O RELATO AQUI""" é um espaço em branco: apague essa frase e escreva o relato no lugar, mantendo as aspas triplas em volta.
+
+Skill A — Triagem de Sintomas
+
+Você é atendente de oficina de informática. Leia o relato do cliente. Responda SOMENTE neste formato, uma linha cada: Modelo: ... Sintoma principal: ... Gravidade: BAIXA, MÉDIA ou ALTA Se faltar informação, escreva "não informado". Não invente.
+
+Relato: """COLE O RELATO AQUI"""
+
+Skill B — Busca no histórico (GraphRAG)
+
+Você é técnico de bancada. Use APENAS o histórico abaixo. Dado o modelo e o sintoma, diga: Peça provável: ... Tempo de bancada: ... Casos parecidos: (número da ordem de serviço) Se o histórico não tiver caso parecido, responda "sem histórico".
+
+Modelo: COLE_AQUI Sintoma: COLE_AQUI Histórico: """COLE AQUI A TABELA DO DOCUMENTO 4"""
+
+Onde pegar o histórico da Skill B
+
+Abra o documento 4 (Histórico de serviços) pelo link da Etapa 2. Selecione a tabela inteira, copie e cole no lugar de COLE AQUI A TABELA DO DOCUMENTO 4. Preencha também o modelo e o sintoma.
